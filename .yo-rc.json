@@ -1,0 +1,26 @@
+{
+  "generator-ngx-rocket": {
+    "version": "6.2.0",
+    "props": {
+      "location": "path",
+      "strict": false,
+      "skipInstall": false,
+      "skipQuickstart": false,
+      "initGit": true,
+      "appName": "Thot1 0",
+      "target": ["web", "electron"],
+      "pwa": false,
+      "desktop": ["windows", "mac", "linux"],
+      "ui": "material",
+      "layout": "side-menu",
+      "auth": true,
+      "lazy": false,
+      "angulartics": false,
+      "tools": ["prettier", "hads"],
+      "utility": ["lodash", "moment"],
+      "projectName": "thot-1-0",
+      "packageManager": "npm",
+      "mobile": []
+    }
+  }
+}
