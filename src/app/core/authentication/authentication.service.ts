@@ -1,7 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
+import { Logger } from './../logger.service';
 import { Credentials, CredentialsService } from './credentials.service';
+// import { HttpService } from './../http/http.service';
+import { HttpClient } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
+import { error } from 'protractor';
+
+const log = new Logger('authenticationService');
 
 export interface LoginContext {
   username: string;
@@ -15,22 +23,45 @@ export interface LoginContext {
  */
 @Injectable()
 export class AuthenticationService {
-  constructor(private credentialsService: CredentialsService) {}
+  constructor(private credentialsService: CredentialsService, private httpService: HttpClient) {}
 
   /**
    * Authenticates the user.
    * @param context The login parameters.
    * @return The user credentials.
    */
-  login(context: LoginContext): Observable<Credentials> {
+  login(context: LoginContext): Observable<any | Credentials> {
     // Replace by proper authentication call
-
-    const data = {
+    let data = {
       username: context.username,
-      token: '123456'
+      token: '1234'
     };
-    this.credentialsService.setCredentials(data, context.remember);
-    return of(data);
+
+    let response = this.httpService
+      .post(
+        '/auth/login/',
+        { email: context.username, password: context.password },
+        {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json'
+          }),
+          responseType: 'json'
+        }
+      )
+      .pipe(
+        map((value: any) => {
+          if (value.status == 200) {
+            data.token = value.token;
+            this.credentialsService.setCredentials(data, context.remember);
+            return <Credentials>data;
+          } else {
+            throw value.message;
+          }
+        }),
+        catchError((error: any) => error)
+      );
+
+    return response;
   }
 
   /**
