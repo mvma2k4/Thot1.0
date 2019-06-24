@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
         })
       )
       .subscribe((quote: string) => {
-        this.quote = quote;
+        // this.quote = quote;
       });
   }
 }

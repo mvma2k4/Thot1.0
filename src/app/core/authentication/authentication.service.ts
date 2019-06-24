@@ -5,9 +5,7 @@ import { map, catchError } from 'rxjs/operators';
 import { Logger } from './../logger.service';
 import { Credentials, CredentialsService } from './credentials.service';
 // import { HttpService } from './../http/http.service';
-import { HttpClient } from '@angular/common/http';
-import { HttpHeaders } from '@angular/common/http';
-import { error } from 'protractor';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 
 const log = new Logger('authenticationService');
 
@@ -15,6 +13,12 @@ export interface LoginContext {
   username: string;
   password: string;
   remember?: boolean;
+}
+
+export interface InvalidCredentials {
+  // Customize received credentials here
+  status: Number;
+  message: string;
 }
 
 /**
@@ -50,12 +54,13 @@ export class AuthenticationService {
       )
       .pipe(
         map((value: any) => {
+          // log.debug(value)
           if (value.status == 200) {
             data.token = value.token;
             this.credentialsService.setCredentials(data, context.remember);
             return <Credentials>data;
           } else {
-            throw value.message;
+            return <InvalidCredentials>value;
           }
         }),
         catchError((error: any) => error)

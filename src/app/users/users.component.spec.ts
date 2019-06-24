@@ -5,7 +5,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from '@app/material.module';
 import { UsersComponent } from './users.component';
 
-describe('AboutComponent', () => {
+describe('UsersComponent', () => {
   let component: UsersComponent;
   let fixture: ComponentFixture<UsersComponent>;
 

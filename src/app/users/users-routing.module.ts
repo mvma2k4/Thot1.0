@@ -6,7 +6,7 @@ import { Shell } from '@app/shell/shell.service';
 import { UsersComponent } from './users.component';
 
 const routes: Routes = [
-  Shell.childRoutes([{ path: 'about', component: UsersComponent, data: { title: extract('Users') } }])
+  Shell.childRoutes([{ path: 'users', component: UsersComponent, data: { title: extract('Users') } }])
 ];
 
 @NgModule({

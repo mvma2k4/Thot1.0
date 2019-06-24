@@ -5,6 +5,8 @@ import { finalize } from 'rxjs/operators';
 
 import { environment } from '@env/environment';
 import { Logger, I18nService, AuthenticationService, untilDestroyed } from '@app/core';
+import { throwError } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 const log = new Logger('Login');
 
@@ -46,8 +48,13 @@ export class LoginComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         credentials => {
-          log.debug(`${credentials.username} successfully logged in`);
-          this.router.navigate([this.route.snapshot.queryParams.redirect || '/'], { replaceUrl: true });
+          if (credentials.username) {
+            log.debug(`${credentials.username} successfully logged in`);
+            this.router.navigate([this.route.snapshot.queryParams.redirect || '/'], { replaceUrl: true });
+          } else {
+            this.error = credentials.message;
+            // throw new HttpErrorResponse({ error: credentials.message, statusText:credentials.message, status: credentials.status});
+          }
         },
         error => {
           log.debug(`Login error: ${error}`);
