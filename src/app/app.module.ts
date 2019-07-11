@@ -15,6 +15,7 @@ import { LoginModule } from './login/login.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { UsersModule } from './users/users.module';
+import { AdduserComponent } from './users/adduser/adduser.component';
 
 @NgModule({
   imports: [
@@ -33,6 +34,7 @@ import { UsersModule } from './users/users.module';
     LoginModule,
     AppRoutingModule // must be imported as the last module as it contains the fallback route
   ],
+  entryComponents: [AdduserComponent],
   declarations: [AppComponent],
   providers: [],
   bootstrap: [AppComponent]

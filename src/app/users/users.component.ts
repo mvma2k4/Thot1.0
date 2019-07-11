@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 
 import { environment } from '@env/environment';
 import { IUserModel, UsersService } from '@app/users/users-service';
@@ -6,6 +7,7 @@ import { finalize } from 'rxjs/operators';
 
 import { Logger } from '@app/core/logger.service';
 import { untilDestroyed } from '@app/core';
+import { AdduserComponent } from './adduser/adduser.component';
 
 const log = new Logger('usersComponent');
 
@@ -21,7 +23,7 @@ export class UsersComponent implements OnInit {
   usersColumns: string[] = ['fullname', 'email', 'actions'];
   dataSource: IUserModel[] = new Array();
 
-  constructor(private usersService: UsersService) {}
+  constructor(private usersService: UsersService, private _adduserSheet: MatBottomSheet) {}
 
   ngOnInit() {
     this.isLoading = true;
@@ -47,5 +49,9 @@ export class UsersComponent implements OnInit {
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.
+  }
+
+  add_user(): void {
+    this._adduserSheet.open(AdduserComponent);
   }
 }
