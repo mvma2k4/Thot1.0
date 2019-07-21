@@ -5,8 +5,6 @@ import { finalize } from 'rxjs/operators';
 
 import { environment } from '@env/environment';
 import { Logger, I18nService, AuthenticationService, untilDestroyed } from '@app/core';
-import { throwError } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
 
 const log = new Logger('Login');
 

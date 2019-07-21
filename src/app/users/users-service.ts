@@ -47,4 +47,21 @@ export class UsersService {
 
     return response;
   }
+
+  addUser(user: IUserModel): Observable<any | IUserModel> {
+    let response = this.httpService
+      .post('/auth/signup/', user, {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'x-access-token': this.credentialsService.credentials.token
+        }),
+        responseType: 'json'
+      })
+      .pipe(
+        map((value: any) => {}),
+        catchError((error: any) => error)
+      );
+
+    return response;
+  }
 }

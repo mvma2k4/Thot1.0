@@ -1,21 +1,27 @@
-<mat-nav-list>
-  <a href="https://keep.google.com/" mat-list-item (click)="openLink($event)">
-    <span mat-line>Google Keep</span>
-    <span mat-line>Add to a note</span>
-  </a>
-
-  <a href="https://docs.google.com/" mat-list-item (click)="openLink($event)">
-    <span mat-line>Google Docs</span>
-    <span mat-line>Embed in a document</span>
-  </a>
-
-  <a href="https://plus.google.com/" mat-list-item (click)="openLink($event)">
-    <span mat-line>Google Plus</span>
-    <span mat-line>Share with your friends</span>
-  </a>
-
-  <a href="https://hangouts.google.com/" mat-list-item (click)="openLink($event)">
-    <span mat-line>Google Hangouts</span>
-    <span mat-line>Show to your coworkers</span>
-  </a>
-</mat-nav-list>
+<mat-card>
+  <mat-card-title>Usuario Nuevo</mat-card-title>
+  <mat-card-subtitle>Ingrese los datos de un nuevo usuario</mat-card-subtitle>
+  <mat-card-content>
+    <form (ngSubmit)="addUser()" [formGroup]="nuevoUsuario" novalidate>
+      <div class="addUser-error" [hidden]="!error || isLoading" translate>
+        Usuario no se agrego.
+      </div>
+      <mat-form-field [hideRequiredMarker]="false" [floatLabel]="auto">
+        <input matInput type="text" formControlName="fullname" placeholder="Nombre Completo" required />
+      </mat-form-field>
+      <mat-form-field [hideRequiredMarker]="false" [floatLabel]="auto">
+        <input matInput type="text" formControlName="email" placeholder="Correo electrónico" required />
+      </mat-form-field>
+      <mat-form-field [hideRequiredMarker]="false" [floatLabel]="auto">
+        <input matInput type="password" formControlName="password" placeholder="Contraseña" required />
+      </mat-form-field>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" type="submit" [disabled]="nuevoUsuario.invalid || isLoading">
+          <app-loader class="inline-loader" [isLoading]="isLoading"></app-loader>
+          <span translate>Agregar Usuario</span>
+        </button>
+        <button mat-button (click)="(openLink)">Cancelar</button>
+      </mat-card-actions>
+    </form>
+  </mat-card-content>
+</mat-card>
