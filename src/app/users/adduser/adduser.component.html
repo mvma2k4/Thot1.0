@@ -4,7 +4,7 @@
   <mat-card-content>
     <form (ngSubmit)="addUser()" [formGroup]="nuevoUsuario" novalidate>
       <div class="addUser-error" [hidden]="!error || isLoading" translate>
-        Usuario no se agrego.
+        {{ error }}
       </div>
       <mat-form-field [hideRequiredMarker]="false" [floatLabel]="auto">
         <input matInput type="text" formControlName="fullname" placeholder="Nombre Completo" required />
@@ -20,7 +20,7 @@
           <app-loader class="inline-loader" [isLoading]="isLoading"></app-loader>
           <span translate>Agregar Usuario</span>
         </button>
-        <button mat-button (click)="(openLink)">Cancelar</button>
+        <button mat-button (click)="openLink($event)">Cancelar</button>
       </mat-card-actions>
     </form>
   </mat-card-content>

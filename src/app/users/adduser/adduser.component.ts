@@ -10,7 +10,8 @@ import { IUserModel, UsersService } from '@app/users/users-service';
 const log = new Logger('AddUser');
 @Component({
   selector: 'Adduser',
-  templateUrl: 'adduser.component.html'
+  templateUrl: 'adduser.component.html',
+  styleUrls: ['adduser.component.scss']
 })
 export class AdduserComponent {
   error: string | undefined;
@@ -41,20 +42,25 @@ export class AdduserComponent {
       .pipe(
         finalize(() => {
           this.nuevoUsuario.markAsPristine();
+          this.isLoading = false;
+          log.info('finalize pipe');
         }),
         untilDestroyed(this)
       )
       .subscribe(
-        response => {
-          if (response.status == 200) {
-            log.debug(`${response.message} `);
+        value => {
+          log.info(`after request ${this.isLoading}`);
+          if (!value.logged) {
+            this.error = value.message;
+            this._bottomSheetRef.instance.isLoading = false;
+            log.info(`after erroe ${this.isLoading}`);
           } else {
-            this.error = response.message;
+            this.isLoading = false;
+            log.info(`after vernificatio ${value.status}`);
           }
-          this.isLoading = false;
         },
         error => {
-          log.debug(`Add user error: ${error}`);
+          log.debug(`Add user Supeerror: ${error}`);
           this.error = error;
         }
       );

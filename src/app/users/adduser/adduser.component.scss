@@ -1,0 +1,9 @@
+@import "src/theme/theme-variables";
+
+.inline-loader {
+  display: inline-block;
+}
+
+.addUser-error {
+  color: mat-color($app-warn);
+}

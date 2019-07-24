@@ -58,7 +58,9 @@ export class UsersService {
         responseType: 'json'
       })
       .pipe(
-        map((value: any) => {}),
+        map((value: any) => {
+          return value;
+        }),
         catchError((error: any) => error)
       );
 
