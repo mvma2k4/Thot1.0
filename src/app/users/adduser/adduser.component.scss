@@ -4,6 +4,11 @@
   display: inline-block;
 }
 
+.adduser-container,
+.mat-form-field {
+  width: 100%;
+}
+
 .addUser-error {
   color: mat-color($app-warn);
 }

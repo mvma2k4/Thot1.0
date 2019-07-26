@@ -15,7 +15,7 @@ export interface LoginContext {
   remember?: boolean;
 }
 
-export interface InvalidCredentials {
+export interface IResponse {
   // Customize received credentials here
   status: Number;
   message: string;
@@ -60,7 +60,7 @@ export class AuthenticationService {
             this.credentialsService.setCredentials(data, context.remember);
             return <Credentials>data;
           } else {
-            return <InvalidCredentials>value;
+            return <IResponse>value;
           }
         }),
         catchError((error: any) => error)

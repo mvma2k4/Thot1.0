@@ -23,6 +23,8 @@ export class UsersComponent implements OnInit {
   usersColumns: string[] = ['fullname', 'email', 'actions'];
   dataSource: IUserModel[] = new Array();
 
+  _matbottonSheetRef: MatBottomSheetRef = null;
+
   constructor(private usersService: UsersService, private _adduserSheet: MatBottomSheet) {}
 
   ngOnInit() {
@@ -52,6 +54,66 @@ export class UsersComponent implements OnInit {
   }
 
   add_user(): void {
-    this._adduserSheet.open(AdduserComponent);
+    this._matbottonSheetRef = this._adduserSheet.open(AdduserComponent);
+    this._matbottonSheetRef
+      .afterDismissed()
+      .pipe(
+        finalize(() => {
+          this.ngOnInit();
+        }),
+        untilDestroyed(this)
+      )
+      .subscribe(
+        values => {
+          log.debug(values);
+        },
+        error => {
+          log.error(`Get error after return add user component: ${error}`);
+        }
+      );
+  }
+
+  edit_user(user: IUserModel): void {
+    log.debug(`edit user ${user}`);
+    this._matbottonSheetRef = this._adduserSheet.open(AdduserComponent, {
+      data: user
+    });
+    this._matbottonSheetRef
+      .afterDismissed()
+      .pipe(
+        finalize(() => {
+          this.ngOnInit();
+        }),
+        untilDestroyed(this)
+      )
+      .subscribe(
+        values => {
+          log.debug(values);
+        },
+        error => {
+          log.error(`Get error after return add user component: ${error}`);
+        }
+      );
+  }
+
+  delete_user(user: IUserModel): void {
+    log.debug(user);
+    const users$ = this.usersService.removeUser(user);
+    users$
+      .pipe(
+        finalize(() => {
+          this.isLoading = false;
+        }),
+        untilDestroyed(this)
+      )
+      .subscribe(
+        values => {
+          log.debug(values);
+          this.dataSource = values;
+        },
+        error => {
+          log.debug(`Get Users error: ${error}`);
+        }
+      );
   }
 }
