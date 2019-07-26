@@ -16,6 +16,8 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { UsersModule } from './users/users.module';
 import { AdduserComponent } from './users/adduser/adduser.component';
+import { CountersModule } from './counters/counters.module';
+import { AddcounterComponent } from './counters/addcounter/addcounter.component';
 
 @NgModule({
   imports: [
@@ -31,10 +33,11 @@ import { AdduserComponent } from './users/adduser/adduser.component';
     HomeModule,
     AboutModule,
     UsersModule,
+    CountersModule,
     LoginModule,
     AppRoutingModule // must be imported as the last module as it contains the fallback route
   ],
-  entryComponents: [AdduserComponent],
+  entryComponents: [AdduserComponent, AddcounterComponent],
   declarations: [AppComponent],
   providers: [],
   bootstrap: [AppComponent]
