@@ -3,20 +3,20 @@
     <mat-card-title>Usuario Nuevo</mat-card-title>
     <mat-card-subtitle>Ingrese los datos de un nuevo usuario</mat-card-subtitle>
     <mat-card-content>
-      <form (ngSubmit)="addUser()" [formGroup]="nuevoUsuario" novalidate>
+      <form (ngSubmit)="add_user()" [formGroup]="nuevoUsuario" novalidate>
         <div class="addUser-error" [hidden]="!error || isLoading" translate>
           {{ error }}
         </div>
         <div fxLayout="column">
-          <mat-form-field [hideRequiredMarker]="false" [floatLabel]="auto">
+          <mat-form-field [hideRequiredMarker]="false">
             <input matInput type="text" formControlName="fullname" placeholder="Nombre Completo" required />
           </mat-form-field>
 
-          <mat-form-field [hideRequiredMarker]="false" [floatLabel]="auto">
+          <mat-form-field [hideRequiredMarker]="false">
             <input matInput type="text" formControlName="email" placeholder="Correo electrónico" required />
           </mat-form-field>
 
-          <mat-form-field [hideRequiredMarker]="false" [floatLabel]="auto">
+          <mat-form-field [hideRequiredMarker]="false">
             <input matInput type="password" formControlName="password" placeholder="Contraseña" required />
           </mat-form-field>
         </div>

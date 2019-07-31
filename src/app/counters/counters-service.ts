@@ -53,9 +53,9 @@ export class CountersService {
     return response;
   }
 
-  addCounter(user: ICounter): Observable<any | IResponse> {
+  addCounter(counter: ICounter): Observable<any | IResponse> {
     let response = this.httpService
-      .post('/v1/counters/', user, {
+      .post('/v1/counters/', counter, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
           'x-access-token': this.credentialsService.credentials.token
@@ -72,9 +72,9 @@ export class CountersService {
     return response;
   }
 
-  updateCounter(user: ICounter): Observable<any | IResponse> {
+  updateCounter(counter: ICounter): Observable<any | IResponse> {
     let response = this.httpService
-      .put('/v1/counters', user, {
+      .put('/v1/counters', counter, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
           'x-access-token': this.credentialsService.credentials.token
@@ -91,9 +91,9 @@ export class CountersService {
     return response;
   }
 
-  removeUser(user: ICounter): Observable<any | IResponse> {
+  removeCounter(counter: ICounter): Observable<any | IResponse> {
     let response = this.httpService
-      .delete('/v1/counters/' + user.uuid, {
+      .delete('/v1/counters/' + counter.uuid, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
           'x-access-token': this.credentialsService.credentials.token

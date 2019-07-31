@@ -7,7 +7,7 @@ import { Logger, I18nService, untilDestroyed } from '@app/core';
 
 import { ICounter, CountersService } from '@app/counters/counters-service';
 
-const log = new Logger('AddUser');
+const log = new Logger('AddCounter');
 @Component({
   selector: 'Addcounter',
   templateUrl: 'addcounter.component.html',
@@ -34,7 +34,7 @@ export class AddcounterComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {}
 
-  private add_counter() {
+  add_counter() {
     const signup$ = this.countersService.addCounter(this.nuevoCounter.value);
     signup$
       .pipe(
@@ -65,7 +65,7 @@ export class AddcounterComponent implements OnInit, OnDestroy {
       );
   }
 
-  private update_counter() {
+  update_counter() {
     const signup$ = this.countersService.updateCounter(this.data);
     signup$
       .pipe(
@@ -80,9 +80,9 @@ export class AddcounterComponent implements OnInit, OnDestroy {
         value => {
           log.info(`after request ${this.isLoading}`);
           log.info(value);
-          if (value.status != 200) {
+          if (value.status != 200 && value.status != 201) {
             this.error = value.message;
-            log.info(`after error ${this.isLoading}`);
+            log.info(`after error ${value}`);
           } else {
             this._bottomSheetRef.dismiss();
             log.info(`after vernification ${value.status}`);
@@ -96,7 +96,7 @@ export class AddcounterComponent implements OnInit, OnDestroy {
       );
   }
 
-  saveUser() {
+  saveCounter() {
     this.isLoading = true;
     if (this.data) {
       log.debug(this.data);

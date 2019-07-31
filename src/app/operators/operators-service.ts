@@ -8,23 +8,23 @@ import { Logger } from '../core/logger.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IResponse } from '@app/core';
 
-const log = new Logger('usersService');
+const log = new Logger('operatorService');
 
-export interface IUserModel {
+export interface IOperatorModel {
   uuid: string;
-  email: string;
-  password: string;
-  fullname: string;
+  name: string;
+  address: string;
+  phone: string;
 }
 
 @Injectable()
-export class UsersService {
+export class OperatorsService {
   constructor(private credentialsService: CredentialsService, private httpService: HttpClient) {}
 
-  findAll(): Observable<any | IUserModel[]> {
-    let values: IUserModel[] = new Array();
+  findAll(): Observable<any | IOperatorModel[]> {
+    let values: IOperatorModel[] = new Array();
     let response = this.httpService
-      .get('/v1/users/', {
+      .get('/v1/operators/', {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
           'x-access-token': this.credentialsService.credentials.token
@@ -34,12 +34,12 @@ export class UsersService {
       .pipe(
         map((value: any) => {
           log.debug(value);
-          value.forEach((element: IUserModel) => {
+          value.forEach((element: IOperatorModel) => {
             values.push({
               uuid: element.uuid,
-              email: element.email,
-              password: element.password,
-              fullname: element.fullname
+              name: element.name,
+              address: element.address,
+              phone: element.phone
             });
           });
 
@@ -51,9 +51,9 @@ export class UsersService {
     return response;
   }
 
-  addUser(user: IUserModel): Observable<any | IResponse> {
+  addOperator(counter: IOperatorModel): Observable<any | IResponse> {
     let response = this.httpService
-      .post('/auth/signup/', user, {
+      .post('/v1/operators/', counter, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
           'x-access-token': this.credentialsService.credentials.token
@@ -70,9 +70,9 @@ export class UsersService {
     return response;
   }
 
-  updateUser(user: IUserModel): Observable<any | IResponse> {
+  updateOperator(counter: IOperatorModel): Observable<any | IResponse> {
     let response = this.httpService
-      .put('/v1/users', user, {
+      .put('/v1/operators', counter, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
           'x-access-token': this.credentialsService.credentials.token
@@ -89,9 +89,9 @@ export class UsersService {
     return response;
   }
 
-  removeUser(user: IUserModel): Observable<any | IResponse> {
+  removeOperator(counter: IOperatorModel): Observable<any | IResponse> {
     let response = this.httpService
-      .delete('/v1/users/' + user.uuid, {
+      .delete('/v1/operators/' + counter.uuid, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
           'x-access-token': this.credentialsService.credentials.token

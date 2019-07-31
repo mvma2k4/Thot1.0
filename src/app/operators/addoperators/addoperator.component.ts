@@ -5,26 +5,26 @@ import { finalize } from 'rxjs/operators';
 
 import { Logger, I18nService, untilDestroyed } from '@app/core';
 
-import { IUserModel, UsersService } from '@app/users/users-service';
+import { IOperatorModel, OperatorsService } from '@app/operators/operators-service';
 
-const log = new Logger('AddUser');
+const log = new Logger('AddOperator');
 @Component({
-  selector: 'Adduser',
-  templateUrl: 'adduser.component.html',
-  styleUrls: ['adduser.component.scss']
+  selector: 'Addoperator',
+  templateUrl: 'addoperator.component.html',
+  styleUrls: ['addoperator.component.scss']
 })
-export class AdduserComponent implements OnInit, OnDestroy {
+export class AddoperatorComponent implements OnInit, OnDestroy {
   error: string | undefined;
-  nuevoUsuario!: FormGroup;
+  nuevoOperador!: FormGroup;
   isLoading = false;
-  data!: IUserModel;
+  data!: IOperatorModel;
 
   constructor(
-    private _bottomSheetRef: MatBottomSheetRef<AdduserComponent>,
-    @Inject(MAT_BOTTOM_SHEET_DATA) data: IUserModel,
+    private _bottomSheetRef: MatBottomSheetRef<AddoperatorComponent>,
+    @Inject(MAT_BOTTOM_SHEET_DATA) data: IOperatorModel,
     private _changeDetectorRef: ChangeDetectorRef,
     private fb: FormBuilder,
-    private usersService: UsersService
+    private operatorsService: OperatorsService
   ) {
     this.createForm();
     this.data = data;
@@ -32,20 +32,17 @@ export class AdduserComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (this.data) {
-      this.nuevoUsuario.value.fullname = this.data.fullname;
-      this.nuevoUsuario.value.email = this.data.email;
-      this.nuevoUsuario.value.password = this.data.password;
     }
   }
 
   ngOnDestroy() {}
 
-  private add_user() {
-    const signup$ = this.usersService.addUser(this.nuevoUsuario.value);
+  add_operator() {
+    const signup$ = this.operatorsService.addOperator(this.nuevoOperador.value);
     signup$
       .pipe(
         finalize(() => {
-          this.nuevoUsuario.markAsPristine({ onlySelf: false });
+          this.nuevoOperador.markAsPristine({ onlySelf: false });
           this.isLoading = false;
           this._changeDetectorRef.markForCheck();
         }),
@@ -65,18 +62,18 @@ export class AdduserComponent implements OnInit, OnDestroy {
           this.ngOnInit();
         },
         error => {
-          log.debug(`Add user eror: ${error}`);
+          log.debug(`Add operator eror: ${error}`);
           this.error = error;
         }
       );
   }
 
-  private update_user() {
-    const signup$ = this.usersService.updateUser(this.data);
+  update_operator() {
+    const signup$ = this.operatorsService.updateOperator(this.data);
     signup$
       .pipe(
         finalize(() => {
-          this.nuevoUsuario.markAsPristine({ onlySelf: false });
+          this.nuevoOperador.markAsPristine({ onlySelf: false });
           this.isLoading = false;
           this._changeDetectorRef.markForCheck();
         }),
@@ -96,19 +93,19 @@ export class AdduserComponent implements OnInit, OnDestroy {
           this.ngOnInit();
         },
         error => {
-          log.debug(`Add user eror: ${error}`);
+          log.debug(`Add operator eror: ${error}`);
           this.error = error;
         }
       );
   }
 
-  saveUser() {
+  saveOperator() {
     this.isLoading = true;
     if (this.data) {
       log.debug(this.data);
-      this.update_user();
+      this.update_operator();
     } else {
-      this.add_user();
+      this.add_operator();
     }
   }
 
@@ -118,10 +115,10 @@ export class AdduserComponent implements OnInit, OnDestroy {
   }
 
   private createForm() {
-    this.nuevoUsuario = this.fb.group({
-      email: ['', Validators.required],
-      password: ['', Validators.required],
-      fullname: ['', Validators.required]
+    this.nuevoOperador = this.fb.group({
+      name: ['', Validators.required],
+      address: ['', Validators.required],
+      phone: ['', Validators.required]
     });
   }
 }

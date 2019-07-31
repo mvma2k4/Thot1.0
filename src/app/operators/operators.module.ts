@@ -4,12 +4,12 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@app/material.module';
-import { UsersRoutingModule } from './users-routing.module';
-import { UsersComponent } from './users.component';
-import { UsersService } from './users-service';
+import { OperatorsRoutingModule } from './operators-routing.module';
+import { OperatorsComponent } from './operators.component';
+import { OperatorsService } from './operators-service';
 import { CoreModule } from '@app/core';
 import { SharedModule } from '@app/shared';
-import { AdduserComponent } from './adduser/adduser.component';
+import { AddoperatorComponent } from './addoperators/addoperator.component';
 
 @NgModule({
   imports: [
@@ -20,9 +20,9 @@ import { AdduserComponent } from './adduser/adduser.component';
     SharedModule,
     FlexLayoutModule,
     MaterialModule,
-    UsersRoutingModule
+    OperatorsRoutingModule
   ],
-  providers: [UsersService],
-  declarations: [UsersComponent, AdduserComponent]
+  providers: [OperatorsService],
+  declarations: [OperatorsComponent, AddoperatorComponent]
 })
-export class UsersModule {}
+export class OperatorsModule {}

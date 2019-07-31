@@ -2,35 +2,35 @@ import { Component, OnInit } from '@angular/core';
 import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 
 import { environment } from '@env/environment';
-import { IUserModel, UsersService } from '@app/users/users-service';
+import { IOperatorModel, OperatorsService } from '@app/operators/operators-service';
 import { finalize } from 'rxjs/operators';
 
 import { Logger } from '@app/core/logger.service';
 import { untilDestroyed } from '@app/core';
-import { AdduserComponent } from './adduser/adduser.component';
+import { AddoperatorComponent } from './addoperators/addoperator.component';
 
-const log = new Logger('usersComponent');
+const log = new Logger('operatorsComponent');
 
 @Component({
-  selector: 'app-users',
-  templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss']
+  selector: 'app-operators',
+  templateUrl: './operators.component.html',
+  styleUrls: ['./operators.component.scss']
 })
-export class UsersComponent implements OnInit {
+export class OperatorsComponent implements OnInit {
   version: string = environment.version;
   isLoading = false;
 
-  usersColumns: string[] = ['fullname', 'email', 'actions'];
-  dataSource: IUserModel[] = new Array();
+  operatorsColumns: string[] = ['name', 'address', 'phone', 'actions'];
+  dataSource: IOperatorModel[] = new Array();
 
   _matbottonSheetRef: MatBottomSheetRef = null;
 
-  constructor(private usersService: UsersService, private _adduserSheet: MatBottomSheet) {}
+  constructor(private operatorsService: OperatorsService, private _addoperatorSheet: MatBottomSheet) {}
 
   ngOnInit() {
     this.isLoading = true;
-    const users$ = this.usersService.findAll();
-    users$
+    const operators$ = this.operatorsService.findAll();
+    operators$
       .pipe(
         finalize(() => {
           this.isLoading = false;
@@ -43,7 +43,7 @@ export class UsersComponent implements OnInit {
           this.dataSource = values;
         },
         error => {
-          log.debug(`Get Users error: ${error}`);
+          log.debug(`Get Operators error: ${error}`);
         }
       );
   }
@@ -53,8 +53,9 @@ export class UsersComponent implements OnInit {
     //Add 'implements OnDestroy' to the class.
   }
 
-  add_user(): void {
-    this._matbottonSheetRef = this._adduserSheet.open(AdduserComponent);
+  add_operator(): void {
+    this.isLoading = true;
+    this._matbottonSheetRef = this._addoperatorSheet.open(AddoperatorComponent);
     this._matbottonSheetRef
       .afterDismissed()
       .pipe(
@@ -68,15 +69,15 @@ export class UsersComponent implements OnInit {
           log.debug(values);
         },
         error => {
-          log.error(`Get error after return add user component: ${error}`);
+          log.error(`Get error after return add operator component: ${error}`);
         }
       );
   }
 
-  edit_user(user: IUserModel): void {
-    log.debug(`edit user ${user}`);
-    this._matbottonSheetRef = this._adduserSheet.open(AdduserComponent, {
-      data: user
+  edit_operator(operator: IOperatorModel): void {
+    log.debug(`edit operator ${operator}`);
+    this._matbottonSheetRef = this._addoperatorSheet.open(AddoperatorComponent, {
+      data: operator
     });
     this._matbottonSheetRef
       .afterDismissed()
@@ -91,15 +92,15 @@ export class UsersComponent implements OnInit {
           log.debug(values);
         },
         error => {
-          log.error(`Get error after return add user component: ${error}`);
+          log.error(`Get error after return add operator component: ${error}`);
         }
       );
   }
 
-  delete_user(user: IUserModel): void {
-    log.debug(user);
-    const users$ = this.usersService.removeUser(user);
-    users$
+  delete_operator(operator: IOperatorModel): void {
+    log.debug(operator);
+    const operators$ = this.operatorsService.removeOperator(operator);
+    operators$
       .pipe(
         finalize(() => {
           this.isLoading = false;
@@ -112,7 +113,7 @@ export class UsersComponent implements OnInit {
           this.dataSource = values;
         },
         error => {
-          log.debug(`Get Users error: ${error}`);
+          log.debug(`Get Operators error: ${error}`);
         }
       );
   }

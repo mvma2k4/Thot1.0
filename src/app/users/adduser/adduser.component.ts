@@ -40,7 +40,7 @@ export class AdduserComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {}
 
-  private add_user() {
+  add_user() {
     const signup$ = this.usersService.addUser(this.nuevoUsuario.value);
     signup$
       .pipe(
@@ -71,7 +71,7 @@ export class AdduserComponent implements OnInit, OnDestroy {
       );
   }
 
-  private update_user() {
+  update_user() {
     const signup$ = this.usersService.updateUser(this.data);
     signup$
       .pipe(

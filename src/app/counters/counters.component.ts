@@ -53,7 +53,7 @@ export class CountersComponent implements OnInit {
     //Add 'implements OnDestroy' to the class.
   }
 
-  add_user(): void {
+  add_counter(): void {
     this._matbottonSheetRef = this._addcounterSheet.open(AddcounterComponent);
     this._matbottonSheetRef
       .afterDismissed()
@@ -68,13 +68,13 @@ export class CountersComponent implements OnInit {
           log.debug(values);
         },
         error => {
-          log.error(`Get error after return add user component: ${error}`);
+          log.error(`Get error after return add counter component: ${error}`);
         }
       );
   }
 
-  edit_user(counter: ICounter): void {
-    log.debug(`edit user ${counter}`);
+  edit_counter(counter: ICounter): void {
+    log.debug(`edit counter ${counter}`);
     this._matbottonSheetRef = this._addcounterSheet.open(AddcounterComponent, {
       data: counter
     });
@@ -91,15 +91,15 @@ export class CountersComponent implements OnInit {
           log.debug(values);
         },
         error => {
-          log.error(`Get error after return add user component: ${error}`);
+          log.error(`Get error after return add counter component: ${error}`);
         }
       );
   }
 
-  delete_user(counter: ICounter): void {
+  delete_counter(counter: ICounter): void {
     log.debug(counter);
-    const users$ = this.countersService.removeUser(counter);
-    users$
+    const counters$ = this.countersService.removeCounter(counter);
+    counters$
       .pipe(
         finalize(() => {
           this.isLoading = false;
@@ -112,7 +112,7 @@ export class CountersComponent implements OnInit {
           this.dataSource = values;
         },
         error => {
-          log.debug(`Get Users error: ${error}`);
+          log.debug(`Get Counters error: ${error}`);
         }
       );
   }

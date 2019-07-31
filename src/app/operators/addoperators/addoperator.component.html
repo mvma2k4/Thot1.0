@@ -1,10 +1,10 @@
-<div class="adduser-container" fxLayout="row" fxLayoutAlign="center">
+<div class="addcounter-container" fxLayout="row" fxLayoutAlign="center">
   <mat-card fxFlex="90%" fxFlex.sm="66%" fxFlex.md="66%" fxFlex.gt-md="66%">
-    <mat-card-title>Counter Nuevo</mat-card-title>
-    <mat-card-subtitle>Ingrese los datos de un nuevo Counter</mat-card-subtitle>
+    <mat-card-title>Operador Nuevo</mat-card-title>
+    <mat-card-subtitle>Ingrese los datos de un nuevo Operador</mat-card-subtitle>
     <mat-card-content>
-      <form (ngSubmit)="add_counter()" [formGroup]="nuevoCounter" novalidate>
-        <div class="addCounter-error" [hidden]="!error || isLoading" translate>
+      <form (ngSubmit)="add_operator()" [formGroup]="nuevoOperador" novalidate>
+        <div class="addOperator-error" [hidden]="!error || isLoading" translate>
           {{ error }}
         </div>
         <div fxLayout="column">
@@ -13,7 +13,7 @@
           </mat-form-field>
 
           <mat-form-field [hideRequiredMarker]="false">
-            <input matInput type="text" formControlName="address" placeholder="Direccion" required />
+            <input matInput type="text" formControlName="address" placeholder="Dirección" required />
           </mat-form-field>
 
           <mat-form-field [hideRequiredMarker]="false">
@@ -21,9 +21,9 @@
           </mat-form-field>
         </div>
         <div fxLayout="row">
-          <button mat-raised-button color="primary" type="submit" [disabled]="nuevoCounter.invalid || isLoading">
+          <button mat-raised-button color="primary" type="submit" [disabled]="nuevoOperador.invalid || isLoading">
             <app-loader class="inline-loader" [isLoading]="isLoading"></app-loader>
-            <span>Agregar Counter</span>
+            <span>Agregar Usuario</span>
           </button>
           <button mat-raised-button (click)="openLink($event)">Cancelar</button>
         </div>
