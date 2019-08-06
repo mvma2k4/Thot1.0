@@ -1,0 +1,33 @@
+<div class="adduser-container" fxLayout="row" fxLayoutAlign="center">
+  <mat-card fxFlex="90%" fxFlex.sm="66%" fxFlex.md="66%" fxFlex.gt-md="66%">
+    <mat-card-title>Nota de Debito Nueva</mat-card-title>
+    <mat-card-subtitle>Ingrese los datos de una nueva Nota de Debito</mat-card-subtitle>
+    <mat-card-content>
+      <form (ngSubmit)="add_debitnote()" [formGroup]="nuevoDebitnote" novalidate>
+        <div class="addDebitnote-error" [hidden]="!error || isLoading" translate>
+          {{ error }}
+        </div>
+        <div fxLayout="column">
+          <mat-form-field [hideRequiredMarker]="false">
+            <input matInput type="text" formControlName="name" placeholder="Nombre Completo" required />
+          </mat-form-field>
+
+          <mat-form-field [hideRequiredMarker]="false">
+            <input matInput type="text" formControlName="address" placeholder="Direccion" required />
+          </mat-form-field>
+
+          <mat-form-field [hideRequiredMarker]="false">
+            <input matInput type="text" formControlName="phone" placeholder="Telefono" required />
+          </mat-form-field>
+        </div>
+        <div fxLayout="row">
+          <button mat-raised-button color="primary" type="submit" [disabled]="nuevoDebitnote.invalid || isLoading">
+            <app-loader class="inline-loader" [isLoading]="isLoading"></app-loader>
+            <span>Agregar Nota de Debito</span>
+          </button>
+          <button mat-raised-button (click)="openLink($event)">Cancelar</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -18,8 +18,10 @@ import { UsersModule } from './users/users.module';
 import { AdduserComponent } from './users/adduser/adduser.component';
 import { CountersModule } from './counters/counters.module';
 import { OperatorsModule } from './operators/operators.module';
+import { DebitnoteModule } from './debitnotes/debitnotes.module';
 import { AddcounterComponent } from './counters/addcounter/addcounter.component';
 import { AddoperatorComponent } from './operators/addoperators/addoperator.component';
+import { AdddebitnoteComponent } from './debitnotes/adddebitnote/adddebitnote.component';
 
 @NgModule({
   imports: [
@@ -37,10 +39,11 @@ import { AddoperatorComponent } from './operators/addoperators/addoperator.compo
     UsersModule,
     CountersModule,
     OperatorsModule,
+    DebitnoteModule,
     LoginModule,
     AppRoutingModule // must be imported as the last module as it contains the fallback route
   ],
-  entryComponents: [AdduserComponent, AddcounterComponent, AddoperatorComponent],
+  entryComponents: [AdduserComponent, AddcounterComponent, AddoperatorComponent, AdddebitnoteComponent],
   declarations: [AppComponent],
   providers: [],
   bootstrap: [AppComponent]

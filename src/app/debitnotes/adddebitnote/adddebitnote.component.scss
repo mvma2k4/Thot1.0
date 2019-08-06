@@ -1,0 +1,14 @@
+@import "src/theme/theme-variables";
+
+.inline-loader {
+  display: inline-block;
+}
+
+.adduser-container,
+.mat-form-field {
+  width: 100%;
+}
+
+.addCounter-error {
+  color: mat-color($app-warn);
+}

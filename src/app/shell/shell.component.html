@@ -46,6 +46,10 @@
             <span translate>Users</span>
           </a>
           <mat-divider></mat-divider>
+          <a mat-list-item routerLink="/debitnotes" routerLinkActive="active" (click)="isMobile && sidenav.close()">
+            <span translate>Notad de Debito</span>
+          </a>
+          <mat-divider></mat-divider>
           <a mat-list-item routerLink="/counters" routerLinkActive="active" (click)="isMobile && sidenav.close()">
             <span translate>Counters</span>
           </a>
