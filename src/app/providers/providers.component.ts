@@ -2,35 +2,35 @@ import { Component, OnInit } from '@angular/core';
 import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 
 import { environment } from '@env/environment';
-import { ICounter, CountersService } from '@app/counters/counters-service';
+import { IProviderModel, ProvidersService } from '@app/providers/providers-service';
 import { finalize } from 'rxjs/operators';
 
 import { Logger } from '@app/core/logger.service';
 import { untilDestroyed } from '@app/core';
-import { AddcounterComponent } from './addcounter/addcounter.component';
+import { AddproviderComponent } from './addproviders/addprovider.component';
 
-const log = new Logger('countersComponent');
+const log = new Logger('providersComponent');
 
 @Component({
-  selector: 'app-counters',
-  templateUrl: './counters.component.html',
-  styleUrls: ['./counters.component.scss']
+  selector: 'app-providers',
+  templateUrl: './providers.component.html',
+  styleUrls: ['./providers.component.scss']
 })
-export class CountersComponent implements OnInit {
+export class ProvidersComponent implements OnInit {
   version: string = environment.version;
   isLoading = false;
 
-  countersColumns: string[] = ['name', 'email', 'phone', 'actions'];
-  dataSource: ICounter[] = new Array();
+  providersColumns: string[] = ['name', 'address', 'phone', 'actions'];
+  dataSource: IProviderModel[] = new Array();
 
   _matbottonSheetRef: MatBottomSheetRef = null;
 
-  constructor(private countersService: CountersService, private _addcounterSheet: MatBottomSheet) {}
+  constructor(private providersService: ProvidersService, private _addproviderSheet: MatBottomSheet) {}
 
   ngOnInit() {
     this.isLoading = true;
-    const counter$ = this.countersService.findAll();
-    counter$
+    const providers$ = this.providersService.findAll();
+    providers$
       .pipe(
         finalize(() => {
           this.isLoading = false;
@@ -43,7 +43,7 @@ export class CountersComponent implements OnInit {
           this.dataSource = values;
         },
         error => {
-          log.debug(`Get Counters error: ${error}`);
+          log.debug(`Get Providers error: ${error}`);
         }
       );
   }
@@ -53,12 +53,14 @@ export class CountersComponent implements OnInit {
     //Add 'implements OnDestroy' to the class.
   }
 
-  add_counter(): void {
-    this._matbottonSheetRef = this._addcounterSheet.open(AddcounterComponent);
+  add_provider(): void {
+    this.isLoading = true;
+    this._matbottonSheetRef = this._addproviderSheet.open(AddproviderComponent);
     this._matbottonSheetRef
       .afterDismissed()
       .pipe(
         finalize(() => {
+          this.isLoading = false;
           this.ngOnInit();
         }),
         untilDestroyed(this)
@@ -68,15 +70,15 @@ export class CountersComponent implements OnInit {
           log.debug(values);
         },
         error => {
-          log.error(`Get error after return add counter component: ${error}`);
+          log.error(`Get error after return add provider component: ${error}`);
         }
       );
   }
 
-  edit_counter(counter: ICounter): void {
-    log.debug(`edit counter ${counter}`);
-    this._matbottonSheetRef = this._addcounterSheet.open(AddcounterComponent, {
-      data: counter
+  edit_provider(provider: IProviderModel): void {
+    log.debug(`edit provider ${provider}`);
+    this._matbottonSheetRef = this._addproviderSheet.open(AddproviderComponent, {
+      data: provider
     });
     this._matbottonSheetRef
       .afterDismissed()
@@ -91,18 +93,19 @@ export class CountersComponent implements OnInit {
           log.debug(values);
         },
         error => {
-          log.error(`Get error after return add counter component: ${error}`);
+          log.error(`Get error after return add provider component: ${error}`);
         }
       );
   }
 
-  delete_counter(counter: ICounter): void {
-    log.debug(counter);
-    const counters$ = this.countersService.removeCounter(counter);
-    counters$
+  delete_provider(provider: IProviderModel): void {
+    log.debug(provider);
+    const providers$ = this.providersService.removeProvider(provider);
+    providers$
       .pipe(
         finalize(() => {
           this.isLoading = false;
+          this.ngOnInit();
         }),
         untilDestroyed(this)
       )
@@ -112,7 +115,7 @@ export class CountersComponent implements OnInit {
           this.dataSource = values;
         },
         error => {
-          log.debug(`Get Counters error: ${error}`);
+          log.debug(`Get Providers error: ${error}`);
         }
       );
   }

@@ -1,47 +1,48 @@
 import { Component, OnDestroy, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
 import { MatBottomSheet, MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
 
 import { Logger, I18nService, untilDestroyed } from '@app/core';
 
-import { ICounter, CountersService } from '@app/counters/counters-service';
-import { IClient, ClientsService } from '@app/clients/clients-service';
+import { IProviderModel, ProvidersService } from '@app/providers/providers-service';
 
-const log = new Logger('AddCounter');
+const log = new Logger('AddProvider');
 @Component({
-  selector: 'Addcounter',
-  templateUrl: 'addcounter.component.html',
-  styleUrls: ['addcounter.component.scss']
+  selector: 'Addprovider',
+  templateUrl: 'addprovider.component.html',
+  styleUrls: ['addprovider.component.scss']
 })
-export class AddcounterComponent implements OnInit, OnDestroy {
+export class AddproviderComponent implements OnInit, OnDestroy {
   error: string | undefined;
-  nuevoCounter!: FormGroup;
-  clientControl!: FormControl;
+  nuevoProveedor!: FormGroup;
   isLoading = false;
-  data!: ICounter;
+  data!: IProviderModel;
 
   constructor(
-    private _bottomSheetRef: MatBottomSheetRef<AddcounterComponent>,
-    @Inject(MAT_BOTTOM_SHEET_DATA) data: ICounter,
+    private _bottomSheetRef: MatBottomSheetRef<AddproviderComponent>,
+    @Inject(MAT_BOTTOM_SHEET_DATA) data: IProviderModel,
     private _changeDetectorRef: ChangeDetectorRef,
     private fb: FormBuilder,
-    private countersService: CountersService
+    private providersService: ProvidersService
   ) {
     this.createForm();
     this.data = data;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.data) {
+    }
+  }
 
   ngOnDestroy() {}
 
-  add_counter() {
-    const signup$ = this.countersService.addCounter(this.nuevoCounter.value);
+  add_provider() {
+    const signup$ = this.providersService.addProvider(this.nuevoProveedor.value);
     signup$
       .pipe(
         finalize(() => {
-          this.nuevoCounter.markAsPristine({ onlySelf: false });
+          this.nuevoProveedor.markAsPristine({ onlySelf: false });
           this.isLoading = false;
           this._changeDetectorRef.markForCheck();
         }),
@@ -61,18 +62,18 @@ export class AddcounterComponent implements OnInit, OnDestroy {
           this.ngOnInit();
         },
         error => {
-          log.debug(`Add user eror: ${error}`);
+          log.debug(`Add provider eror: ${error}`);
           this.error = error;
         }
       );
   }
 
-  update_counter() {
-    const signup$ = this.countersService.updateCounter(this.data);
+  update_provider() {
+    const signup$ = this.providersService.updateProvider(this.data);
     signup$
       .pipe(
         finalize(() => {
-          this.nuevoCounter.markAsPristine({ onlySelf: false });
+          this.nuevoProveedor.markAsPristine({ onlySelf: false });
           this.isLoading = false;
           this._changeDetectorRef.markForCheck();
         }),
@@ -82,9 +83,9 @@ export class AddcounterComponent implements OnInit, OnDestroy {
         value => {
           log.info(`after request ${this.isLoading}`);
           log.info(value);
-          if (value.status != 200 && value.status != 201) {
+          if (value.status != 200) {
             this.error = value.message;
-            log.info(`after error ${value}`);
+            log.info(`after error ${this.isLoading}`);
           } else {
             this._bottomSheetRef.dismiss();
             log.info(`after vernification ${value.status}`);
@@ -92,19 +93,19 @@ export class AddcounterComponent implements OnInit, OnDestroy {
           this.ngOnInit();
         },
         error => {
-          log.debug(`Add user eror: ${error}`);
+          log.debug(`Add provider eror: ${error}`);
           this.error = error;
         }
       );
   }
 
-  saveCounter() {
+  saveProvider() {
     this.isLoading = true;
     if (this.data) {
       log.debug(this.data);
-      this.update_counter();
+      this.update_provider();
     } else {
-      this.add_counter();
+      this.add_provider();
     }
   }
 
@@ -114,12 +115,10 @@ export class AddcounterComponent implements OnInit, OnDestroy {
   }
 
   private createForm() {
-    this.clientControl = new FormControl('', [Validators.required]);
-    this.nuevoCounter = this.fb.group({
-      address: ['', Validators.required],
-      phone: ['', Validators.required],
+    this.nuevoProveedor = this.fb.group({
       name: ['', Validators.required],
-      client: ['', Validators.required]
+      address: ['', Validators.required],
+      phone: ['', Validators.required]
     });
   }
 }

@@ -1,10 +1,10 @@
 <div class="addcounter-container" fxLayout="row" fxLayoutAlign="center">
   <mat-card fxFlex="90%" fxFlex.sm="66%" fxFlex.md="66%" fxFlex.gt-md="66%">
-    <mat-card-title>Operador Nuevo</mat-card-title>
-    <mat-card-subtitle>Ingrese los datos de un nuevo Operador</mat-card-subtitle>
+    <mat-card-title>Proveedor Nuevo</mat-card-title>
+    <mat-card-subtitle>Ingrese los datos de un nuevo Proveedor</mat-card-subtitle>
     <mat-card-content>
-      <form (ngSubmit)="add_operator()" [formGroup]="nuevoOperador" novalidate>
-        <div class="addOperator-error" [hidden]="!error || isLoading" translate>
+      <form (ngSubmit)="add_client()" [formGroup]="nuevoCliente" novalidate>
+        <div class="addClient-error" [hidden]="!error || isLoading" translate>
           {{ error }}
         </div>
         <div fxLayout="column">
@@ -21,7 +21,7 @@
           </mat-form-field>
         </div>
         <div fxLayout="row">
-          <button mat-raised-button color="primary" type="submit" [disabled]="nuevoOperador.invalid || isLoading">
+          <button mat-raised-button color="primary" type="submit" [disabled]="nuevoCliente.invalid || isLoading">
             <app-loader class="inline-loader" [isLoading]="isLoading"></app-loader>
             <span>Agregar Usuario</span>
           </button>

@@ -17,11 +17,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { UsersModule } from './users/users.module';
 import { AdduserComponent } from './users/adduser/adduser.component';
 import { CountersModule } from './counters/counters.module';
-import { OperatorsModule } from './operators/operators.module';
+import { ProvidersModule } from './providers/providers.module';
 import { DebitnoteModule } from './debitnotes/debitnotes.module';
 import { AddcounterComponent } from './counters/addcounter/addcounter.component';
-import { AddoperatorComponent } from './operators/addoperators/addoperator.component';
+import { AddproviderComponent } from './providers/addproviders/addprovider.component';
 import { AdddebitnoteComponent } from './debitnotes/adddebitnote/adddebitnote.component';
+import { ClientsModule } from './clients/clients.module';
+import { AddclientComponent } from './clients/addclients/addclient.component';
 
 @NgModule({
   imports: [
@@ -38,12 +40,19 @@ import { AdddebitnoteComponent } from './debitnotes/adddebitnote/adddebitnote.co
     AboutModule,
     UsersModule,
     CountersModule,
-    OperatorsModule,
+    ClientsModule,
+    ProvidersModule,
     DebitnoteModule,
     LoginModule,
     AppRoutingModule // must be imported as the last module as it contains the fallback route
   ],
-  entryComponents: [AdduserComponent, AddcounterComponent, AddoperatorComponent, AdddebitnoteComponent],
+  entryComponents: [
+    AdduserComponent,
+    AddcounterComponent,
+    AddproviderComponent,
+    AddclientComponent,
+    AdddebitnoteComponent
+  ],
   declarations: [AppComponent],
   providers: [],
   bootstrap: [AppComponent]

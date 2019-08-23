@@ -5,26 +5,26 @@ import { finalize } from 'rxjs/operators';
 
 import { Logger, I18nService, untilDestroyed } from '@app/core';
 
-import { IOperatorModel, OperatorsService } from '@app/operators/operators-service';
+import { IClientModel, ClientsService } from '@app/clients/clients-service';
 
-const log = new Logger('AddOperator');
+const log = new Logger('AddClient');
 @Component({
-  selector: 'Addoperator',
-  templateUrl: 'addoperator.component.html',
-  styleUrls: ['addoperator.component.scss']
+  selector: 'Addclient',
+  templateUrl: 'addclient.component.html',
+  styleUrls: ['addclient.component.scss']
 })
-export class AddoperatorComponent implements OnInit, OnDestroy {
+export class AddclientComponent implements OnInit, OnDestroy {
   error: string | undefined;
-  nuevoOperador!: FormGroup;
+  nuevoProveedor!: FormGroup;
   isLoading = false;
-  data!: IOperatorModel;
+  data!: IClientModel;
 
   constructor(
-    private _bottomSheetRef: MatBottomSheetRef<AddoperatorComponent>,
-    @Inject(MAT_BOTTOM_SHEET_DATA) data: IOperatorModel,
+    private _bottomSheetRef: MatBottomSheetRef<AddclientComponent>,
+    @Inject(MAT_BOTTOM_SHEET_DATA) data: IClientModel,
     private _changeDetectorRef: ChangeDetectorRef,
     private fb: FormBuilder,
-    private operatorsService: OperatorsService
+    private clientsService: ClientsService
   ) {
     this.createForm();
     this.data = data;
@@ -37,12 +37,12 @@ export class AddoperatorComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {}
 
-  add_operator() {
-    const signup$ = this.operatorsService.addOperator(this.nuevoOperador.value);
+  add_client() {
+    const signup$ = this.clientsService.addClient(this.nuevoProveedor.value);
     signup$
       .pipe(
         finalize(() => {
-          this.nuevoOperador.markAsPristine({ onlySelf: false });
+          this.nuevoProveedor.markAsPristine({ onlySelf: false });
           this.isLoading = false;
           this._changeDetectorRef.markForCheck();
         }),
@@ -62,18 +62,18 @@ export class AddoperatorComponent implements OnInit, OnDestroy {
           this.ngOnInit();
         },
         error => {
-          log.debug(`Add operator eror: ${error}`);
+          log.debug(`Add client eror: ${error}`);
           this.error = error;
         }
       );
   }
 
-  update_operator() {
-    const signup$ = this.operatorsService.updateOperator(this.data);
+  update_client() {
+    const signup$ = this.clientsService.updateClient(this.data);
     signup$
       .pipe(
         finalize(() => {
-          this.nuevoOperador.markAsPristine({ onlySelf: false });
+          this.nuevoProveedor.markAsPristine({ onlySelf: false });
           this.isLoading = false;
           this._changeDetectorRef.markForCheck();
         }),
@@ -93,19 +93,19 @@ export class AddoperatorComponent implements OnInit, OnDestroy {
           this.ngOnInit();
         },
         error => {
-          log.debug(`Add operator eror: ${error}`);
+          log.debug(`Add client eror: ${error}`);
           this.error = error;
         }
       );
   }
 
-  saveOperator() {
+  saveClient() {
     this.isLoading = true;
     if (this.data) {
       log.debug(this.data);
-      this.update_operator();
+      this.update_client();
     } else {
-      this.add_operator();
+      this.add_client();
     }
   }
 
@@ -115,7 +115,7 @@ export class AddoperatorComponent implements OnInit, OnDestroy {
   }
 
   private createForm() {
-    this.nuevoOperador = this.fb.group({
+    this.nuevoProveedor = this.fb.group({
       name: ['', Validators.required],
       address: ['', Validators.required],
       phone: ['', Validators.required]

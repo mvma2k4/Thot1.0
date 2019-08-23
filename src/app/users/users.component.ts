@@ -103,6 +103,7 @@ export class UsersComponent implements OnInit {
       .pipe(
         finalize(() => {
           this.isLoading = false;
+          this.ngOnInit();
         }),
         untilDestroyed(this)
       )
