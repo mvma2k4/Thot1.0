@@ -15,7 +15,7 @@ const log = new Logger('AddClient');
 })
 export class AddclientComponent implements OnInit, OnDestroy {
   error: string | undefined;
-  nuevoProveedor!: FormGroup;
+  nuevoCliente!: FormGroup;
   isLoading = false;
   data!: IClientModel;
 
@@ -38,11 +38,11 @@ export class AddclientComponent implements OnInit, OnDestroy {
   ngOnDestroy() {}
 
   add_client() {
-    const signup$ = this.clientsService.addClient(this.nuevoProveedor.value);
+    const signup$ = this.clientsService.addClient(this.nuevoCliente.value);
     signup$
       .pipe(
         finalize(() => {
-          this.nuevoProveedor.markAsPristine({ onlySelf: false });
+          this.nuevoCliente.markAsPristine({ onlySelf: false });
           this.isLoading = false;
           this._changeDetectorRef.markForCheck();
         }),
@@ -73,7 +73,7 @@ export class AddclientComponent implements OnInit, OnDestroy {
     signup$
       .pipe(
         finalize(() => {
-          this.nuevoProveedor.markAsPristine({ onlySelf: false });
+          this.nuevoCliente.markAsPristine({ onlySelf: false });
           this.isLoading = false;
           this._changeDetectorRef.markForCheck();
         }),
@@ -115,7 +115,7 @@ export class AddclientComponent implements OnInit, OnDestroy {
   }
 
   private createForm() {
-    this.nuevoProveedor = this.fb.group({
+    this.nuevoCliente = this.fb.group({
       name: ['', Validators.required],
       address: ['', Validators.required],
       phone: ['', Validators.required]

@@ -6,7 +6,7 @@ import { finalize } from 'rxjs/operators';
 import { Logger, I18nService, untilDestroyed } from '@app/core';
 
 import { ICounter, CountersService } from '@app/counters/counters-service';
-import { IClient, ClientsService } from '@app/clients/clients-service';
+import { IClientModel, ClientsService } from '@app/clients/clients-service';
 
 const log = new Logger('AddCounter');
 @Component({
@@ -20,6 +20,7 @@ export class AddcounterComponent implements OnInit, OnDestroy {
   clientControl!: FormControl;
   isLoading = false;
   data!: ICounter;
+  clients!: IClientModel[];
 
   constructor(
     private _bottomSheetRef: MatBottomSheetRef<AddcounterComponent>,
