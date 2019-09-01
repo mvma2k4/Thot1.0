@@ -17,7 +17,6 @@ const log = new Logger('AddCounter');
 export class AddcounterComponent implements OnInit, OnDestroy {
   error: string | undefined;
   nuevoCounter!: FormGroup;
-  clientControl!: FormControl;
   isLoading = false;
   data!: ICounter;
   clients!: IClientModel[];
@@ -27,13 +26,33 @@ export class AddcounterComponent implements OnInit, OnDestroy {
     @Inject(MAT_BOTTOM_SHEET_DATA) data: ICounter,
     private _changeDetectorRef: ChangeDetectorRef,
     private fb: FormBuilder,
-    private countersService: CountersService
+    private countersService: CountersService,
+    private clientsService: ClientsService
   ) {
     this.createForm();
     this.data = data;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.isLoading = true;
+    const clients$ = this.clientsService.findAll();
+    clients$
+      .pipe(
+        finalize(() => {
+          this.isLoading = false;
+        }),
+        untilDestroyed(this)
+      )
+      .subscribe(
+        values => {
+          log.debug(values);
+          this.clients = values;
+        },
+        error => {
+          log.debug(`Get Clients error: ${error}`);
+        }
+      );
+  }
 
   ngOnDestroy() {}
 
@@ -43,8 +62,8 @@ export class AddcounterComponent implements OnInit, OnDestroy {
       .pipe(
         finalize(() => {
           this.nuevoCounter.markAsPristine({ onlySelf: false });
-          this.isLoading = false;
           this._changeDetectorRef.markForCheck();
+          this.isLoading = false;
         }),
         untilDestroyed(this)
       )
@@ -52,7 +71,7 @@ export class AddcounterComponent implements OnInit, OnDestroy {
         value => {
           log.info(`after request ${this.isLoading}`);
           log.info(value);
-          if (value.status != 200) {
+          if (value.status > 201) {
             this.error = value.message;
             log.info(`after error ${this.isLoading}`);
           } else {
@@ -83,7 +102,7 @@ export class AddcounterComponent implements OnInit, OnDestroy {
         value => {
           log.info(`after request ${this.isLoading}`);
           log.info(value);
-          if (value.status != 200 && value.status != 201) {
+          if (value.status > 201) {
             this.error = value.message;
             log.info(`after error ${value}`);
           } else {
@@ -115,12 +134,11 @@ export class AddcounterComponent implements OnInit, OnDestroy {
   }
 
   private createForm() {
-    this.clientControl = new FormControl('', [Validators.required]);
     this.nuevoCounter = this.fb.group({
       address: ['', Validators.required],
       phone: ['', Validators.required],
       name: ['', Validators.required],
-      client: ['', Validators.required]
+      client_uuid: ['', Validators.required]
     });
   }
 }

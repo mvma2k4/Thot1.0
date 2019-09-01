@@ -52,7 +52,7 @@ export class AddproviderComponent implements OnInit, OnDestroy {
         value => {
           log.info(`after request ${this.isLoading}`);
           log.info(value);
-          if (value.status != 200) {
+          if (value.status > 201) {
             this.error = value.message;
             log.info(`after error ${this.isLoading}`);
           } else {
@@ -83,7 +83,7 @@ export class AddproviderComponent implements OnInit, OnDestroy {
         value => {
           log.info(`after request ${this.isLoading}`);
           log.info(value);
-          if (value.status != 200) {
+          if (value.status > 201) {
             this.error = value.message;
             log.info(`after error ${this.isLoading}`);
           } else {

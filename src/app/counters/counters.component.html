@@ -14,14 +14,18 @@
   </div>
   <app-loader [isLoading]="isLoading" size="3.5"></app-loader>
   <table [hidden]="isLoading" mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="clientName">
+      <th mat-header-cell *matHeaderCellDef>Cliente</th>
+      <td mat-cell *matCellDef="let counter">{{ counter.clientName }}</td>
+    </ng-container>
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef>Nombre</th>
       <td mat-cell *matCellDef="let counter">{{ counter.name }}</td>
     </ng-container>
 
-    <ng-container matColumnDef="email">
-      <th mat-header-cell *matHeaderCellDef>Email</th>
-      <td mat-cell *matCellDef="let counter">{{ counter.email }}</td>
+    <ng-container matColumnDef="address">
+      <th mat-header-cell *matHeaderCellDef>Dirección</th>
+      <td mat-cell *matCellDef="let counter">{{ counter.address }}</td>
     </ng-container>
 
     <ng-container matColumnDef="phone">
@@ -35,7 +39,7 @@
         <button mat-icon-button (click)="edit_counter(counter)" [disabled]="true">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button (click)="delete_counter(counter)" [disabled]="true">
+        <button mat-icon-button (click)="delete_counter(counter)">
           <mat-icon>delete</mat-icon>
         </button>
       </td>

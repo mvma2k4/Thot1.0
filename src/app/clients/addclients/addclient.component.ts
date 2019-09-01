@@ -52,7 +52,7 @@ export class AddclientComponent implements OnInit, OnDestroy {
         value => {
           log.info(`after request ${this.isLoading}`);
           log.info(value);
-          if (value.status != 200) {
+          if (value.status > 201) {
             this.error = value.message;
             log.info(`after error ${this.isLoading}`);
           } else {
@@ -83,7 +83,7 @@ export class AddclientComponent implements OnInit, OnDestroy {
         value => {
           log.info(`after request ${this.isLoading}`);
           log.info(value);
-          if (value.status != 200) {
+          if (value.status > 201) {
             this.error = value.message;
             log.info(`after error ${this.isLoading}`);
           } else {
@@ -118,6 +118,7 @@ export class AddclientComponent implements OnInit, OnDestroy {
     this.nuevoCliente = this.fb.group({
       name: ['', Validators.required],
       address: ['', Validators.required],
+      email: ['', Validators.required],
       phone: ['', Validators.required]
     });
   }

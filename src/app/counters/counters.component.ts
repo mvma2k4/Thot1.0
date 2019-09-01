@@ -3,6 +3,7 @@ import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-shee
 
 import { environment } from '@env/environment';
 import { ICounter, CountersService } from '@app/counters/counters-service';
+import { IClientModel, ClientsService } from '@app/clients/clients-service';
 import { finalize } from 'rxjs/operators';
 
 import { Logger } from '@app/core/logger.service';
@@ -20,12 +21,16 @@ export class CountersComponent implements OnInit {
   version: string = environment.version;
   isLoading = false;
 
-  countersColumns: string[] = ['name', 'email', 'phone', 'actions'];
+  countersColumns: string[] = ['clientName', 'name', 'address', 'phone', 'actions'];
   dataSource: ICounter[] = new Array();
 
   _matbottonSheetRef: MatBottomSheetRef = null;
 
-  constructor(private countersService: CountersService, private _addcounterSheet: MatBottomSheet) {}
+  constructor(
+    private countersService: CountersService,
+    private clientesService: ClientsService,
+    private _addcounterSheet: MatBottomSheet
+  ) {}
 
   ngOnInit() {
     this.isLoading = true;
@@ -41,6 +46,19 @@ export class CountersComponent implements OnInit {
         values => {
           log.debug(values);
           this.dataSource = values;
+          this.dataSource.forEach(counter => {
+            const client$ = this.clientesService.findOne(counter.client_uuid);
+            client$
+              .pipe(
+                finalize(() => {
+                  log.debug('client found');
+                }),
+                untilDestroyed(this)
+              )
+              .subscribe(values => {
+                counter.clientName = values.name;
+              });
+          });
         },
         error => {
           log.debug(`Get Counters error: ${error}`);
@@ -103,6 +121,7 @@ export class CountersComponent implements OnInit {
       .pipe(
         finalize(() => {
           this.isLoading = false;
+          this.ngOnInit();
         }),
         untilDestroyed(this)
       )

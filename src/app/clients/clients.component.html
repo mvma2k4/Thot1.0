@@ -19,6 +19,11 @@
       <td mat-cell *matCellDef="let client">{{ client.name }}</td>
     </ng-container>
 
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef>E-mail</th>
+      <td mat-cell *matCellDef="let client">{{ client.email }}</td>
+    </ng-container>
+
     <ng-container matColumnDef="address">
       <th mat-header-cell *matHeaderCellDef>Direccion</th>
       <td mat-cell *matCellDef="let client">{{ client.address }}</td>

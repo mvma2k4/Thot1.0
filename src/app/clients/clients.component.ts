@@ -20,7 +20,7 @@ export class ClientsComponent implements OnInit {
   version: string = environment.version;
   isLoading = false;
 
-  clientsColumns: string[] = ['name', 'address', 'phone', 'actions'];
+  clientsColumns: string[] = ['name', 'email', 'address', 'phone', 'actions'];
   dataSource: IClientModel[] = new Array();
 
   _matbottonSheetRef: MatBottomSheetRef = null;

@@ -16,6 +16,8 @@ export interface ICounter {
   address: string;
   phone: string;
   perc: number;
+  client_uuid: string;
+  clientName: string;
 }
 
 @Injectable()
@@ -41,7 +43,9 @@ export class CountersService {
               name: element.name,
               address: element.address,
               phone: element.phone,
-              perc: element.perc
+              perc: element.perc,
+              client_uuid: element.client_uuid,
+              clientName: ''
             });
           });
 

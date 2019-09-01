@@ -13,6 +13,7 @@ const log = new Logger('clientService');
 export interface IClientModel {
   uuid: string;
   name: string;
+  email: string;
   address: string;
   phone: string;
 }
@@ -38,12 +39,35 @@ export class ClientsService {
             values.push({
               uuid: element.uuid,
               name: element.name,
+              email: element.email,
               address: element.address,
               phone: element.phone
             });
           });
 
           return values;
+        }),
+        catchError((error: any) => error)
+      );
+
+    return response;
+  }
+
+  findOne(id: string): Observable<any | IClientModel> {
+    let result: IClientModel;
+    let response = this.httpService
+      .get('/v1/clients/' + id, {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'x-access-token': this.credentialsService.credentials.token
+        }),
+        responseType: 'json'
+      })
+      .pipe(
+        map((value: any) => {
+          log.debug(value);
+          result = value;
+          return result;
         }),
         catchError((error: any) => error)
       );
