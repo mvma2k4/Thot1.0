@@ -3,7 +3,7 @@
     <mat-card-title>Proveedor Nuevo</mat-card-title>
     <mat-card-subtitle>Ingrese los datos de un nuevo Proveedor</mat-card-subtitle>
     <mat-card-content>
-      <form (ngSubmit)="add_provider()" [formGroup]="nuevoProveedor" novalidate>
+      <form (ngSubmit)="saveProvider()" [formGroup]="nuevoProveedor" novalidate>
         <div class="addOperator-error" [hidden]="!error || isLoading" translate>
           {{ error }}
         </div>
@@ -23,7 +23,7 @@
         <div fxLayout="row">
           <button mat-raised-button color="primary" type="submit" [disabled]="nuevoProveedor.invalid || isLoading">
             <app-loader class="inline-loader" [isLoading]="isLoading"></app-loader>
-            <span>Agregar Proveedor</span>
+            <span>Guardar Proveedor</span>
           </button>
           <button mat-raised-button (click)="openLink($event)">Cancelar</button>
         </div>

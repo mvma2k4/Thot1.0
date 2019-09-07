@@ -26,8 +26,12 @@ export class AddproviderComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private providersService: ProvidersService
   ) {
-    this.createForm();
     this.data = data;
+    if (this.data) {
+      this.createForm(this.data);
+    } else {
+      this.createForm(null);
+    }
   }
 
   ngOnInit() {
@@ -50,19 +54,14 @@ export class AddproviderComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         value => {
-          log.info(`after request ${this.isLoading}`);
-          log.info(value);
           if (value.status > 201) {
             this.error = value.message;
-            log.info(`after error ${this.isLoading}`);
           } else {
             this._bottomSheetRef.dismiss();
-            log.info(`after vernification ${value.status}`);
           }
           this.ngOnInit();
         },
         error => {
-          log.debug(`Add provider eror: ${error}`);
           this.error = error;
         }
       );
@@ -81,19 +80,14 @@ export class AddproviderComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         value => {
-          log.info(`after request ${this.isLoading}`);
-          log.info(value);
           if (value.status > 201) {
             this.error = value.message;
-            log.info(`after error ${this.isLoading}`);
           } else {
             this._bottomSheetRef.dismiss();
-            log.info(`after vernification ${value.status}`);
           }
           this.ngOnInit();
         },
         error => {
-          log.debug(`Add provider eror: ${error}`);
           this.error = error;
         }
       );
@@ -102,7 +96,9 @@ export class AddproviderComponent implements OnInit, OnDestroy {
   saveProvider() {
     this.isLoading = true;
     if (this.data) {
-      log.debug(this.data);
+      this.data.name = (<IProviderModel>this.nuevoProveedor.value).name;
+      this.data.address = (<IProviderModel>this.nuevoProveedor.value).address;
+      this.data.phone = (<IProviderModel>this.nuevoProveedor.value).phone;
       this.update_provider();
     } else {
       this.add_provider();
@@ -114,11 +110,19 @@ export class AddproviderComponent implements OnInit, OnDestroy {
     event.preventDefault();
   }
 
-  private createForm() {
-    this.nuevoProveedor = this.fb.group({
-      name: ['', Validators.required],
-      address: ['', Validators.required],
-      phone: ['', Validators.required]
-    });
+  private createForm(data: IProviderModel) {
+    if (data) {
+      this.nuevoProveedor = this.fb.group({
+        name: [data.name, Validators.required],
+        address: [data.address, Validators.required],
+        phone: [data.phone, Validators.required]
+      });
+    } else {
+      this.nuevoProveedor = this.fb.group({
+        name: ['', Validators.required],
+        address: ['', Validators.required],
+        phone: ['', Validators.required]
+      });
+    }
   }
 }
