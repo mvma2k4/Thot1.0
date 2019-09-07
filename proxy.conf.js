@@ -12,7 +12,7 @@ const proxyConfig = [
     pathRewrite: {
       '^/api': ''
     },
-    target: 'http://localhost:3000',
+    target: 'https://metropolitana-thot-api.herokuapp.com/',
     changeOrigin: true,
     secure: false
   }

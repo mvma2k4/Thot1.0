@@ -39,7 +39,7 @@ export class ClientsComponent implements OnInit {
       )
       .subscribe(
         values => {
-          log.debug(values);
+          // log.debug(values);
           this.dataSource = values;
         },
         error => {

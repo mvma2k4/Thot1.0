@@ -26,14 +26,15 @@ export class AddclientComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private clientsService: ClientsService
   ) {
-    this.createForm();
     this.data = data;
-  }
-
-  ngOnInit() {
     if (this.data) {
+      this.createForm(this.data);
+    } else {
+      this.createForm(null);
     }
   }
+
+  ngOnInit() {}
 
   ngOnDestroy() {}
 
@@ -50,19 +51,19 @@ export class AddclientComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         value => {
-          log.info(`after request ${this.isLoading}`);
-          log.info(value);
+          // log.info(`after request ${this.isLoading}`);
+          // log.info(value);
           if (value.status > 201) {
             this.error = value.message;
-            log.info(`after error ${this.isLoading}`);
+            // log.info(`after error ${this.isLoading}`);
           } else {
             this._bottomSheetRef.dismiss();
-            log.info(`after vernification ${value.status}`);
+            // log.info(`after vernification ${value.status}`);
           }
           this.ngOnInit();
         },
         error => {
-          log.debug(`Add client eror: ${error}`);
+          log.debug(`Add client error: ${error}`);
           this.error = error;
         }
       );
@@ -81,19 +82,17 @@ export class AddclientComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         value => {
-          log.info(`after request ${this.isLoading}`);
-          log.info(value);
           if (value.status > 201) {
             this.error = value.message;
-            log.info(`after error ${this.isLoading}`);
+            // log.info(`after error ${this.isLoading}`);
           } else {
             this._bottomSheetRef.dismiss();
-            log.info(`after vernification ${value.status}`);
+            // log.info(`after vernification ${value.status}`);
           }
           this.ngOnInit();
         },
         error => {
-          log.debug(`Add client eror: ${error}`);
+          log.debug(`Update client error: ${error}`);
           this.error = error;
         }
       );
@@ -102,7 +101,10 @@ export class AddclientComponent implements OnInit, OnDestroy {
   saveClient() {
     this.isLoading = true;
     if (this.data) {
-      log.debug(this.data);
+      this.data.name = (<IClientModel>this.nuevoCliente.value).name;
+      this.data.address = (<IClientModel>this.nuevoCliente.value).address;
+      this.data.phone = (<IClientModel>this.nuevoCliente.value).phone;
+      this.data.email = (<IClientModel>this.nuevoCliente.value).email;
       this.update_client();
     } else {
       this.add_client();
@@ -114,12 +116,21 @@ export class AddclientComponent implements OnInit, OnDestroy {
     event.preventDefault();
   }
 
-  private createForm() {
-    this.nuevoCliente = this.fb.group({
-      name: ['', Validators.required],
-      address: ['', Validators.required],
-      email: ['', Validators.required],
-      phone: ['', Validators.required]
-    });
+  private createForm(data: IClientModel) {
+    if (data == null) {
+      this.nuevoCliente = this.fb.group({
+        name: ['', Validators.required],
+        address: ['', Validators.required],
+        email: ['', Validators.required],
+        phone: ['', Validators.required]
+      });
+    } else {
+      this.nuevoCliente = this.fb.group({
+        name: [data.name, Validators.required],
+        address: [data.address, Validators.required],
+        email: [data.email, Validators.required],
+        phone: [data.phone, Validators.required]
+      });
+    }
   }
 }

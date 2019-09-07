@@ -3,7 +3,7 @@
     <mat-card-title>Cliente Nuevo</mat-card-title>
     <mat-card-subtitle>Ingrese los datos de un nuevo Cliente</mat-card-subtitle>
     <mat-card-content>
-      <form (ngSubmit)="add_client()" [formGroup]="nuevoCliente" novalidate>
+      <form (ngSubmit)="saveClient()" [formGroup]="nuevoCliente" novalidate>
         <div class="addClient-error" [hidden]="!error || isLoading" translate>
           {{ error }}
         </div>
@@ -26,7 +26,7 @@
         <div fxLayout="row">
           <button mat-raised-button color="primary" type="submit" [disabled]="nuevoCliente.invalid || isLoading">
             <app-loader class="inline-loader" [isLoading]="isLoading"></app-loader>
-            <span>Agregar Cliente</span>
+            <span>Guardar Cliente</span>
           </button>
           <button mat-raised-button (click)="openLink($event)">Cancelar</button>
         </div>
