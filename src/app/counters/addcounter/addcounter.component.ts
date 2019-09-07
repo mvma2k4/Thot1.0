@@ -29,8 +29,12 @@ export class AddcounterComponent implements OnInit, OnDestroy {
     private countersService: CountersService,
     private clientsService: ClientsService
   ) {
-    this.createForm();
     this.data = data;
+    if (this.data) {
+      this.createForm(this.data);
+    } else {
+      this.createForm(null);
+    }
   }
 
   ngOnInit() {
@@ -121,7 +125,9 @@ export class AddcounterComponent implements OnInit, OnDestroy {
   saveCounter() {
     this.isLoading = true;
     if (this.data) {
-      log.debug(this.data);
+      this.data.client_uuid = (<ICounter>this.nuevoCounter.value).client_uuid;
+      this.data.name = (<ICounter>this.nuevoCounter.value).name;
+      this.data.email = (<ICounter>this.nuevoCounter.value).email;
       this.update_counter();
     } else {
       this.add_counter();
@@ -133,12 +139,19 @@ export class AddcounterComponent implements OnInit, OnDestroy {
     event.preventDefault();
   }
 
-  private createForm() {
-    this.nuevoCounter = this.fb.group({
-      address: ['', Validators.required],
-      phone: ['', Validators.required],
-      name: ['', Validators.required],
-      client_uuid: ['', Validators.required]
-    });
+  private createForm(data: ICounter) {
+    if (data) {
+      this.nuevoCounter = this.fb.group({
+        email: [data.email, Validators.required],
+        name: [data.name, Validators.required],
+        client_uuid: [data.client_uuid, Validators.required]
+      });
+    } else {
+      this.nuevoCounter = this.fb.group({
+        email: ['', Validators.required],
+        name: ['', Validators.required],
+        client_uuid: ['', Validators.required]
+      });
+    }
   }
 }

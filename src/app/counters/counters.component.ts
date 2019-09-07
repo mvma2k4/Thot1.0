@@ -21,7 +21,7 @@ export class CountersComponent implements OnInit {
   version: string = environment.version;
   isLoading = false;
 
-  countersColumns: string[] = ['clientName', 'name', 'address', 'phone', 'actions'];
+  countersColumns: string[] = ['clientName', 'name', 'email', 'actions'];
   dataSource: ICounter[] = new Array();
 
   _matbottonSheetRef: MatBottomSheetRef = null;

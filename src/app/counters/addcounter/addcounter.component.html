@@ -3,7 +3,7 @@
     <mat-card-title>Counter Nuevo</mat-card-title>
     <mat-card-subtitle>Ingrese los datos de un nuevo Counter</mat-card-subtitle>
     <mat-card-content>
-      <form (ngSubmit)="add_counter()" [formGroup]="nuevoCounter" novalidate>
+      <form (ngSubmit)="saveCounter()" [formGroup]="nuevoCounter" novalidate>
         <div class="addCounter-error" [hidden]="!error || isLoading" translate>
           {{ error }}
         </div>
@@ -24,17 +24,13 @@
           </mat-form-field>
 
           <mat-form-field [hideRequiredMarker]="false">
-            <input matInput type="text" formControlName="address" placeholder="Direccion" required />
-          </mat-form-field>
-
-          <mat-form-field [hideRequiredMarker]="false">
-            <input matInput type="text" formControlName="phone" placeholder="Telefono" required />
+            <input matInput type="text" formControlName="email" placeholder="Email" required />
           </mat-form-field>
         </div>
         <div fxLayout="row">
           <button mat-raised-button color="primary" type="submit" [disabled]="nuevoCounter.invalid || isLoading">
             <app-loader class="inline-loader" [isLoading]="isLoading"></app-loader>
-            <span>Agregar Counter</span>
+            <span>Guardar Counter</span>
           </button>
           <button mat-raised-button (click)="openLink($event)">Cancelar</button>
         </div>

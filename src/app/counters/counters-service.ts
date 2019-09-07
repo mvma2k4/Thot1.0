@@ -13,9 +13,7 @@ const log = new Logger('countersService');
 export interface ICounter {
   uuid: string;
   name: string;
-  address: string;
-  phone: string;
-  perc: number;
+  email: string;
   client_uuid: string;
   clientName: string;
 }
@@ -41,9 +39,7 @@ export class CountersService {
             values.push({
               uuid: element.uuid,
               name: element.name,
-              address: element.address,
-              phone: element.phone,
-              perc: element.perc,
+              email: element.email,
               client_uuid: element.client_uuid,
               clientName: ''
             });
