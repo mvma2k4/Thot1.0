@@ -5,41 +5,48 @@ import { finalize } from 'rxjs/operators';
 
 import { Logger, I18nService, untilDestroyed } from '@app/core';
 
-import { ICounter, DebitnoteService } from '@app/debitnotes/debitnotes-service';
+import { IDebitNoteModel, DebitNotesService } from '@app/debitnotes/debitnotes-service';
 
-const log = new Logger('AddCounter');
+const log = new Logger('AddDebitNote');
 @Component({
-  selector: 'Adddebitnote',
-  templateUrl: 'adddebitnote.component.html',
-  styleUrls: ['adddebitnote.component.scss']
+  selector: 'Addprovider',
+  templateUrl: 'addprovider.component.html',
+  styleUrls: ['addprovider.component.scss']
 })
-export class AdddebitnoteComponent implements OnInit, OnDestroy {
+export class AddproviderComponent implements OnInit, OnDestroy {
   error: string | undefined;
-  nuevoDebitnote!: FormGroup;
+  nuevoNotaDebito!: FormGroup;
   isLoading = false;
-  data!: ICounter;
+  data!: IDebitNoteModel;
 
   constructor(
-    private _bottomSheetRef: MatBottomSheetRef<AdddebitnoteComponent>,
-    @Inject(MAT_BOTTOM_SHEET_DATA) data: ICounter,
+    private _bottomSheetRef: MatBottomSheetRef<AddproviderComponent>,
+    @Inject(MAT_BOTTOM_SHEET_DATA) data: IDebitNoteModel,
     private _changeDetectorRef: ChangeDetectorRef,
     private fb: FormBuilder,
-    private debitnotesService: DebitnoteService
+    private debitnotesService: DebitNotesService
   ) {
-    this.createForm();
     this.data = data;
+    if (this.data) {
+      this.createForm(this.data);
+    } else {
+      this.createForm(null);
+    }
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.data) {
+    }
+  }
 
   ngOnDestroy() {}
 
-  add_debitnote() {
-    const signup$ = this.debitnotesService.addCounter(this.nuevoDebitnote.value);
+  add_provider() {
+    const signup$ = this.debitnotesService.addDebitNote(this.nuevoNotaDebito.value);
     signup$
       .pipe(
         finalize(() => {
-          this.nuevoDebitnote.markAsPristine({ onlySelf: false });
+          this.nuevoNotaDebito.markAsPristine({ onlySelf: false });
           this.isLoading = false;
           this._changeDetectorRef.markForCheck();
         }),
@@ -47,30 +54,25 @@ export class AdddebitnoteComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         value => {
-          log.info(`after request ${this.isLoading}`);
-          log.info(value);
-          if (value.status != 200) {
+          if (value.status > 201) {
             this.error = value.message;
-            log.info(`after error ${this.isLoading}`);
           } else {
             this._bottomSheetRef.dismiss();
-            log.info(`after vernification ${value.status}`);
           }
           this.ngOnInit();
         },
         error => {
-          log.debug(`Add user eror: ${error}`);
           this.error = error;
         }
       );
   }
 
-  update_debitnote() {
-    const signup$ = this.debitnotesService.updateCounter(this.data);
+  update_provider() {
+    const signup$ = this.debitnotesService.updateDebitNote(this.data);
     signup$
       .pipe(
         finalize(() => {
-          this.nuevoDebitnote.markAsPristine({ onlySelf: false });
+          this.nuevoNotaDebito.markAsPristine({ onlySelf: false });
           this.isLoading = false;
           this._changeDetectorRef.markForCheck();
         }),
@@ -78,31 +80,28 @@ export class AdddebitnoteComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         value => {
-          log.info(`after request ${this.isLoading}`);
-          log.info(value);
-          if (value.status != 200 && value.status != 201) {
+          if (value.status > 201) {
             this.error = value.message;
-            log.info(`after error ${value}`);
           } else {
             this._bottomSheetRef.dismiss();
-            log.info(`after vernification ${value.status}`);
           }
           this.ngOnInit();
         },
         error => {
-          log.debug(`Add user eror: ${error}`);
           this.error = error;
         }
       );
   }
 
-  saveCounter() {
+  saveDebitNote() {
     this.isLoading = true;
     if (this.data) {
-      log.debug(this.data);
-      this.update_debitnote();
+      this.data.name = (<IDebitNoteModel>this.nuevoNotaDebito.value).name;
+      this.data.address = (<IDebitNoteModel>this.nuevoNotaDebito.value).address;
+      this.data.phone = (<IDebitNoteModel>this.nuevoNotaDebito.value).phone;
+      this.update_provider();
     } else {
-      this.add_debitnote();
+      this.add_provider();
     }
   }
 
@@ -111,11 +110,19 @@ export class AdddebitnoteComponent implements OnInit, OnDestroy {
     event.preventDefault();
   }
 
-  private createForm() {
-    this.nuevoDebitnote = this.fb.group({
-      address: ['', Validators.required],
-      phone: ['', Validators.required],
-      name: ['', Validators.required]
-    });
+  private createForm(data: IDebitNoteModel) {
+    if (data) {
+      this.nuevoNotaDebito = this.fb.group({
+        name: [data.name, Validators.required],
+        address: [data.address, Validators.required],
+        phone: [data.phone, Validators.required]
+      });
+    } else {
+      this.nuevoNotaDebito = this.fb.group({
+        name: ['', Validators.required],
+        address: ['', Validators.required],
+        phone: ['', Validators.required]
+      });
+    }
   }
 }

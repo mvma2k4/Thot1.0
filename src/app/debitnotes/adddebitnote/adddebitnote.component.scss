@@ -4,11 +4,11 @@
   display: inline-block;
 }
 
-.adduser-container,
+.addcounter-container,
 .mat-form-field {
   width: 100%;
 }
 
-.addCounter-error {
+.addUser-error {
   color: mat-color($app-warn);
 }

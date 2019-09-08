@@ -3,21 +3,21 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MaterialModule } from '@app/material.module';
-import { DebitnoteComponent } from './debitnotes.component';
+import { DebitNotesComponent } from './debitnotes.component';
 
-describe('DebitnoteComponent', () => {
-  let component: DebitnoteComponent;
-  let fixture: ComponentFixture<DebitnoteComponent>;
+describe('DebitNotesComponent', () => {
+  let component: DebitNotesComponent;
+  let fixture: ComponentFixture<DebitNotesComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [BrowserAnimationsModule, FlexLayoutModule, MaterialModule],
-      declarations: [DebitnoteComponent]
+      declarations: [DebitNotesComponent]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DebitnoteComponent);
+    fixture = TestBed.createComponent(DebitNotesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

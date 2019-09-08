@@ -8,22 +8,21 @@ import { Logger } from '../core/logger.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IResponse } from '@app/core';
 
-const log = new Logger('debitnotesService');
+const log = new Logger('providerService');
 
-export interface ICounter {
+export interface IDebitNoteModel {
   uuid: string;
   name: string;
   address: string;
   phone: string;
-  perc: number;
 }
 
 @Injectable()
-export class DebitnoteService {
+export class DebitNotesService {
   constructor(private credentialsService: CredentialsService, private httpService: HttpClient) {}
 
-  findAll(): Observable<any | ICounter[]> {
-    let values: ICounter[] = new Array();
+  findAll(): Observable<any | IDebitNoteModel[]> {
+    let values: IDebitNoteModel[] = new Array();
     let response = this.httpService
       .get('/v1/debitnotes/', {
         headers: new HttpHeaders({
@@ -35,13 +34,12 @@ export class DebitnoteService {
       .pipe(
         map((value: any) => {
           log.debug(value);
-          value.forEach((element: ICounter) => {
+          value.forEach((element: IDebitNoteModel) => {
             values.push({
               uuid: element.uuid,
               name: element.name,
               address: element.address,
-              phone: element.phone,
-              perc: element.perc
+              phone: element.phone
             });
           });
 
@@ -53,9 +51,9 @@ export class DebitnoteService {
     return response;
   }
 
-  addCounter(debitnote: ICounter): Observable<any | IResponse> {
+  addDebitNote(counter: IDebitNoteModel): Observable<any | IResponse> {
     let response = this.httpService
-      .post('/v1/debitnotes/', debitnote, {
+      .post('/v1/debitnotes/', counter, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
           'x-access-token': this.credentialsService.credentials.token
@@ -72,9 +70,9 @@ export class DebitnoteService {
     return response;
   }
 
-  updateCounter(debitnote: ICounter): Observable<any | IResponse> {
+  updateDebitNote(counter: IDebitNoteModel): Observable<any | IResponse> {
     let response = this.httpService
-      .put('/v1/debitnotes', debitnote, {
+      .put('/v1/debitnotes', counter, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
           'x-access-token': this.credentialsService.credentials.token
@@ -91,9 +89,9 @@ export class DebitnoteService {
     return response;
   }
 
-  removeCounter(debitnote: ICounter): Observable<any | IResponse> {
+  removeDebitNote(counter: IDebitNoteModel): Observable<any | IResponse> {
     let response = this.httpService
-      .delete('/v1/debitnotes/' + debitnote.uuid, {
+      .delete('/v1/debitnotes/' + counter.uuid, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
           'x-access-token': this.credentialsService.credentials.token

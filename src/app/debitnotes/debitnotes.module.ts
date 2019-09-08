@@ -4,12 +4,12 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@app/material.module';
-import { DebitnoteRoutingModule } from './debitnotes-routing.module';
-import { DebitnoteComponent } from './debitnotes.component';
-import { DebitnoteService } from './debitnotes-service';
+import { DebitNotesRoutingModule } from './debitnotes-routing.module';
+import { DebitNotesComponent } from './debitnotes.component';
+import { DebitNotesService } from './debitnotes-service';
 import { CoreModule } from '@app/core';
 import { SharedModule } from '@app/shared';
-import { AdddebitnoteComponent } from './adddebitnote/adddebitnote.component';
+import { AddproviderComponent } from './adddebitnote/adddebitnote.component';
 
 @NgModule({
   imports: [
@@ -20,9 +20,9 @@ import { AdddebitnoteComponent } from './adddebitnote/adddebitnote.component';
     SharedModule,
     FlexLayoutModule,
     MaterialModule,
-    DebitnoteRoutingModule
+    DebitNotesRoutingModule
   ],
-  providers: [DebitnoteService],
-  declarations: [DebitnoteComponent, AdddebitnoteComponent]
+  providers: [DebitNotesService],
+  declarations: [DebitNotesComponent, AddproviderComponent]
 })
-export class DebitnoteModule {}
+export class DebitNotesModule {}
