@@ -6,7 +6,7 @@ import { Shell } from '@app/shell/shell.service';
 import { DebitNotesComponent } from './debitnotes.component';
 
 const routes: Routes = [
-  Shell.childRoutes([{ path: 'providers', component: DebitNotesComponent, data: { title: extract('DebitNotes') } }])
+  Shell.childRoutes([{ path: 'debitnotes', component: DebitNotesComponent, data: { title: extract('DebitNotes') } }])
 ];
 
 @NgModule({
