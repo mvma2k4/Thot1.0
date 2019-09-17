@@ -18,7 +18,7 @@ import { UsersModule } from './users/users.module';
 import { AdduserComponent } from './users/adduser/adduser.component';
 import { CountersModule } from './counters/counters.module';
 import { ProvidersModule } from './providers/providers.module';
-import { DebitnoteModule } from './debitnotes/debitnotes.module';
+import { DebitNotesModule } from './debitnotes/debitnotes.module';
 import { AddcounterComponent } from './counters/addcounter/addcounter.component';
 import { AddproviderComponent } from './providers/addproviders/addprovider.component';
 import { AdddebitnoteComponent } from './debitnotes/adddebitnote/adddebitnote.component';
@@ -42,7 +42,7 @@ import { AddclientComponent } from './clients/addclients/addclient.component';
     CountersModule,
     ClientsModule,
     ProvidersModule,
-    DebitnoteModule,
+    DebitNotesModule,
     LoginModule,
     AppRoutingModule // must be imported as the last module as it contains the fallback route
   ],

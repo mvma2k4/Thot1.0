@@ -9,18 +9,18 @@ import { IDebitNoteModel, DebitNotesService } from '@app/debitnotes/debitnotes-s
 
 const log = new Logger('AddDebitNote');
 @Component({
-  selector: 'Addprovider',
-  templateUrl: 'addprovider.component.html',
-  styleUrls: ['addprovider.component.scss']
+  selector: 'Adddebitnote',
+  templateUrl: 'adddebitnote.component.html',
+  styleUrls: ['adddebitnote.component.scss']
 })
-export class AddproviderComponent implements OnInit, OnDestroy {
+export class AdddebitnoteComponent implements OnInit, OnDestroy {
   error: string | undefined;
   nuevoNotaDebito!: FormGroup;
   isLoading = false;
   data!: IDebitNoteModel;
 
   constructor(
-    private _bottomSheetRef: MatBottomSheetRef<AddproviderComponent>,
+    private _bottomSheetRef: MatBottomSheetRef<AdddebitnoteComponent>,
     @Inject(MAT_BOTTOM_SHEET_DATA) data: IDebitNoteModel,
     private _changeDetectorRef: ChangeDetectorRef,
     private fb: FormBuilder,
@@ -41,7 +41,7 @@ export class AddproviderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {}
 
-  add_provider() {
+  add_debitnote() {
     const signup$ = this.debitnotesService.addDebitNote(this.nuevoNotaDebito.value);
     signup$
       .pipe(
@@ -67,7 +67,7 @@ export class AddproviderComponent implements OnInit, OnDestroy {
       );
   }
 
-  update_provider() {
+  update_debitnote() {
     const signup$ = this.debitnotesService.updateDebitNote(this.data);
     signup$
       .pipe(
@@ -99,9 +99,9 @@ export class AddproviderComponent implements OnInit, OnDestroy {
       this.data.name = (<IDebitNoteModel>this.nuevoNotaDebito.value).name;
       this.data.address = (<IDebitNoteModel>this.nuevoNotaDebito.value).address;
       this.data.phone = (<IDebitNoteModel>this.nuevoNotaDebito.value).phone;
-      this.update_provider();
+      this.update_debitnote();
     } else {
-      this.add_provider();
+      this.add_debitnote();
     }
   }
 

@@ -9,7 +9,7 @@ import { DebitNotesComponent } from './debitnotes.component';
 import { DebitNotesService } from './debitnotes-service';
 import { CoreModule } from '@app/core';
 import { SharedModule } from '@app/shared';
-import { AddproviderComponent } from './adddebitnote/adddebitnote.component';
+import { AdddebitnoteComponent } from './adddebitnote/adddebitnote.component';
 
 @NgModule({
   imports: [
@@ -23,6 +23,6 @@ import { AddproviderComponent } from './adddebitnote/adddebitnote.component';
     DebitNotesRoutingModule
   ],
   providers: [DebitNotesService],
-  declarations: [DebitNotesComponent, AddproviderComponent]
+  declarations: [DebitNotesComponent, AdddebitnoteComponent]
 })
 export class DebitNotesModule {}

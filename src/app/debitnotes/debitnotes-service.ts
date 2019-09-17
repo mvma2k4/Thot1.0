@@ -8,7 +8,7 @@ import { Logger } from '../core/logger.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IResponse } from '@app/core';
 
-const log = new Logger('providerService');
+const log = new Logger('debitnoteService');
 
 export interface IDebitNoteModel {
   uuid: string;

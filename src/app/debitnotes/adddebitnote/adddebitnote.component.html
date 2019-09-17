@@ -1,13 +1,15 @@
 <div class="addcounter-container" fxLayout="row" fxLayoutAlign="center">
-  <mat-card fxFlex="90%" fxFlex.sm="66%" fxFlex.md="66%" fxFlex.gt-md="66%">
+  <mat-card fxFlex="90%" fxFlex.sm="90%" fxFlex.md="90%" fxFlex.gt-md="90%">
     <mat-card-title>NotaDebito Nuevo</mat-card-title>
-    <mat-card-subtitle>Ingrese los datos de un nuevo NotaDebito</mat-card-subtitle>
+    <mat-card-subtitle
+      >Ingrese los datos de un nuevo NotaDebito <b>{{ nuevoNotaDebito.code }}</b>
+    </mat-card-subtitle>
     <mat-card-content>
       <form (ngSubmit)="saveDebitNote()" [formGroup]="nuevoNotaDebito" novalidate>
         <div class="addOperator-error" [hidden]="!error || isLoading" translate>
           {{ error }}
         </div>
-        <div fxLayout="column">
+        <div fxLayout="row">
           <mat-form-field [hideRequiredMarker]="false">
             <input matInput type="text" formControlName="name" placeholder="Nombre Completo" required />
           </mat-form-field>

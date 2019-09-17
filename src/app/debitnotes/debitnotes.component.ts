@@ -7,7 +7,7 @@ import { finalize } from 'rxjs/operators';
 
 import { Logger } from '@app/core/logger.service';
 import { untilDestroyed } from '@app/core';
-import { AddproviderComponent } from './adddebitnote/adddebitnote.component';
+import { AdddebitnoteComponent } from './adddebitnote/adddebitnote.component';
 
 const log = new Logger('debitnotesComponent');
 
@@ -20,12 +20,20 @@ export class DebitNotesComponent implements OnInit {
   version: string = environment.version;
   isLoading = false;
 
-  debitnotesColumns: string[] = ['name', 'address', 'phone', 'actions'];
+  debitnotesColumns: string[] = [
+    'code',
+    'passenger',
+    'service',
+    'current_date',
+    'expiration_date',
+    'amount_dollar',
+    'actions'
+  ];
   dataSource: IDebitNoteModel[] = new Array();
 
   _matbottonSheetRef: MatBottomSheetRef = null;
 
-  constructor(private debitnotesService: DebitNotesService, private _addproviderSheet: MatBottomSheet) {}
+  constructor(private debitnotesService: DebitNotesService, private _adddebitnoteSheet: MatBottomSheet) {}
 
   ngOnInit() {
     this.isLoading = true;
@@ -53,9 +61,9 @@ export class DebitNotesComponent implements OnInit {
     //Add 'implements OnDestroy' to the class.
   }
 
-  add_provider(): void {
+  add_debitnote(): void {
     this.isLoading = true;
-    this._matbottonSheetRef = this._addproviderSheet.open(AddproviderComponent);
+    this._matbottonSheetRef = this._adddebitnoteSheet.open(AdddebitnoteComponent);
     this._matbottonSheetRef
       .afterDismissed()
       .pipe(
@@ -70,15 +78,15 @@ export class DebitNotesComponent implements OnInit {
           log.debug(values);
         },
         error => {
-          log.error(`Get error after return add provider component: ${error}`);
+          log.error(`Get error after return add debitnote component: ${error}`);
         }
       );
   }
 
-  edit_provider(provider: IDebitNoteModel): void {
-    log.debug(`edit provider ${provider}`);
-    this._matbottonSheetRef = this._addproviderSheet.open(AddproviderComponent, {
-      data: provider
+  edit_debitnote(debitnote: IDebitNoteModel): void {
+    log.debug(`edit debitnote ${debitnote}`);
+    this._matbottonSheetRef = this._adddebitnoteSheet.open(AdddebitnoteComponent, {
+      data: debitnote
     });
     this._matbottonSheetRef
       .afterDismissed()
@@ -93,14 +101,14 @@ export class DebitNotesComponent implements OnInit {
           log.debug(values);
         },
         error => {
-          log.error(`Get error after return add provider component: ${error}`);
+          log.error(`Get error after return add debitnote component: ${error}`);
         }
       );
   }
 
-  delete_provider(provider: IDebitNoteModel): void {
-    log.debug(provider);
-    const debitnotes$ = this.debitnotesService.removeDebitNote(provider);
+  delete_debitnote(debitnote: IDebitNoteModel): void {
+    log.debug(debitnote);
+    const debitnotes$ = this.debitnotesService.removeDebitNote(debitnote);
     debitnotes$
       .pipe(
         finalize(() => {
