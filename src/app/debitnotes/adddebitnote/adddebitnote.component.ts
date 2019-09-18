@@ -113,7 +113,7 @@ export class AdddebitnoteComponent implements OnInit, OnDestroy {
   private createForm(data: IDebitNoteModel) {
     if (data) {
       this.nuevoNotaDebito = this.fb.group({
-        name: [data.name, Validators.required],
+        code: [data.code, Validators.required],
         address: [data.address, Validators.required],
         phone: [data.phone, Validators.required]
       });

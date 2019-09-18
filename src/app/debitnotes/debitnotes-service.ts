@@ -12,9 +12,30 @@ const log = new Logger('debitnoteService');
 
 export interface IDebitNoteModel {
   uuid: string;
-  name: string;
-  address: string;
-  phone: string;
+  code: string;
+  clientName: string;
+  client_uuid: string;
+  providerName: string;
+  provider_uuid: string;
+
+  counterName: string;
+  counter_uuid: string;
+  passenger: Text;
+  service: Text;
+  voucher: Text;
+
+  concept: Text;
+
+  current_date: Date;
+  expiration_date: Date;
+
+  change: number;
+  amount_dollar: number;
+  amount_currency: number;
+
+  settlement: string;
+
+  state: number;
 }
 
 @Injectable()
@@ -37,9 +58,9 @@ export class DebitNotesService {
           value.forEach((element: IDebitNoteModel) => {
             values.push({
               uuid: element.uuid,
-              name: element.name,
-              address: element.address,
-              phone: element.phone
+              code: element.code,
+              clientName: element.clientName,
+              provider_uuid: element.uuid
             });
           });
 
