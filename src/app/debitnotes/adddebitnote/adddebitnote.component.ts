@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
+import { formatDate } from '@angular/common';
 import { MatBottomSheet, MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
@@ -6,6 +7,10 @@ import { finalize } from 'rxjs/operators';
 import { Logger, I18nService, untilDestroyed } from '@app/core';
 
 import { IDebitNoteModel, DebitNotesService } from '@app/debitnotes/debitnotes-service';
+import { IClientModel, ClientsService } from '@app/clients/clients-service';
+import { ICounter, CountersService } from '@app/counters/counters-service';
+import { IProviderModel, ProvidersService } from '@app/providers/providers-service';
+import { from } from 'rxjs';
 
 const log = new Logger('AddDebitNote');
 @Component({
@@ -18,13 +23,19 @@ export class AdddebitnoteComponent implements OnInit, OnDestroy {
   nuevoNotaDebito!: FormGroup;
   isLoading = false;
   data!: IDebitNoteModel;
+  clients!: IClientModel[];
+  counters!: ICounter[];
+  providers!: IProviderModel[];
 
   constructor(
     private _bottomSheetRef: MatBottomSheetRef<AdddebitnoteComponent>,
     @Inject(MAT_BOTTOM_SHEET_DATA) data: IDebitNoteModel,
     private _changeDetectorRef: ChangeDetectorRef,
     private fb: FormBuilder,
-    private debitnotesService: DebitNotesService
+    private debitnotesService: DebitNotesService,
+    private clientsService: ClientsService,
+    private countersService: CountersService,
+    private providersService: ProvidersService
   ) {
     this.data = data;
     if (this.data) {
@@ -35,8 +46,64 @@ export class AdddebitnoteComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    if (this.data) {
-    }
+    this.isLoading = true;
+    const clients$ = this.clientsService.findAll();
+    const providers$ = this.providersService.findAll();
+
+    clients$
+      .pipe(
+        finalize(() => {
+          this.isLoading = false;
+        }),
+        untilDestroyed(this)
+      )
+      .subscribe(
+        values => {
+          log.debug(values);
+          this.clients = values;
+        },
+        error => {
+          log.debug(`Get Clients error: ${error}`);
+        }
+      );
+
+    providers$
+      .pipe(
+        finalize(() => {
+          this.isLoading = false;
+        }),
+        untilDestroyed(this)
+      )
+      .subscribe(
+        values => {
+          log.debug(values);
+          this.providers = values;
+        },
+        error => {
+          log.debug(`Get Providers error: ${error}`);
+        }
+      );
+  }
+
+  getCounters(client_uuid: string) {
+    this.isLoading = true;
+    const counters$ = this.countersService.findAllByClient(client_uuid);
+    counters$
+      .pipe(
+        finalize(() => {
+          this.isLoading = false;
+        }),
+        untilDestroyed(this)
+      )
+      .subscribe(
+        values => {
+          log.debug(values);
+          this.counters = values;
+        },
+        error => {
+          log.debug(`Get Clients error: ${error}`);
+        }
+      );
   }
 
   ngOnDestroy() {}
@@ -96,9 +163,24 @@ export class AdddebitnoteComponent implements OnInit, OnDestroy {
   saveDebitNote() {
     this.isLoading = true;
     if (this.data) {
-      this.data.name = (<IDebitNoteModel>this.nuevoNotaDebito.value).name;
-      this.data.address = (<IDebitNoteModel>this.nuevoNotaDebito.value).address;
-      this.data.phone = (<IDebitNoteModel>this.nuevoNotaDebito.value).phone;
+      this.data.code = (<IDebitNoteModel>this.nuevoNotaDebito.value).code;
+      this.data.clientName = (<IDebitNoteModel>this.nuevoNotaDebito.value).clientName;
+      this.data.client_uuid = (<IDebitNoteModel>this.nuevoNotaDebito.value).client_uuid;
+      this.data.providerName = (<IDebitNoteModel>this.nuevoNotaDebito.value).providerName;
+      this.data.provider_uuid = (<IDebitNoteModel>this.nuevoNotaDebito.value).provider_uuid;
+      this.data.counterName = (<IDebitNoteModel>this.nuevoNotaDebito.value).counterName;
+      this.data.counter_uuid = (<IDebitNoteModel>this.nuevoNotaDebito.value).counter_uuid;
+      this.data.passenger = (<IDebitNoteModel>this.nuevoNotaDebito.value).passenger;
+      this.data.service = (<IDebitNoteModel>this.nuevoNotaDebito.value).service;
+      this.data.voucher = (<IDebitNoteModel>this.nuevoNotaDebito.value).voucher;
+      this.data.concept = (<IDebitNoteModel>this.nuevoNotaDebito.value).concept;
+      this.data.current_date = (<IDebitNoteModel>this.nuevoNotaDebito.value).current_date;
+      this.data.expiration_date = (<IDebitNoteModel>this.nuevoNotaDebito.value).expiration_date;
+      this.data.change = (<IDebitNoteModel>this.nuevoNotaDebito.value).change;
+      this.data.amount_dollar = (<IDebitNoteModel>this.nuevoNotaDebito.value).amount_dollar;
+      this.data.amount_currency = (<IDebitNoteModel>this.nuevoNotaDebito.value).amount_currency;
+      this.data.settlement = (<IDebitNoteModel>this.nuevoNotaDebito.value).settlement;
+      this.data.state = (<IDebitNoteModel>this.nuevoNotaDebito.value).state;
       this.update_debitnote();
     } else {
       this.add_debitnote();
@@ -114,14 +196,44 @@ export class AdddebitnoteComponent implements OnInit, OnDestroy {
     if (data) {
       this.nuevoNotaDebito = this.fb.group({
         code: [data.code, Validators.required],
-        address: [data.address, Validators.required],
-        phone: [data.phone, Validators.required]
+        clientName: [data.clientName, Validators.nullValidator],
+        client_uuid: [data.client_uuid, Validators.required],
+        providerName: [data.providerName, Validators.nullValidator],
+        provider_uuid: [data.provider_uuid, Validators.required],
+        counterName: [data.counterName, Validators.nullValidator],
+        counter_uuid: [data.counter_uuid, Validators.required],
+        passenger: [data.passenger, Validators.required],
+        service: [data.service, Validators.required],
+        voucher: [data.voucher, Validators.required],
+        concept: [data.concept, Validators.required],
+        current_date: [data.current_date, Validators.required],
+        expiration_date: [data.expiration_date, Validators.required],
+        change: [data.change, Validators.nullValidator],
+        amount_dollar: [data.amount_dollar, Validators.nullValidator],
+        amount_currency: [data.amount_currency, Validators.nullValidator],
+        settlement: [data.settlement, Validators.nullValidator],
+        state: [data.state, Validators.required]
       });
     } else {
       this.nuevoNotaDebito = this.fb.group({
-        name: ['', Validators.required],
-        address: ['', Validators.required],
-        phone: ['', Validators.required]
+        code: ['210+', Validators.required],
+        clientName: ['', Validators.nullValidator],
+        client_uuid: ['', Validators.required],
+        providerName: ['', Validators.nullValidator],
+        provider_uuid: ['', Validators.required],
+        counterName: ['', Validators.nullValidator],
+        counter_uuid: ['', Validators.required],
+        passenger: ['', Validators.required],
+        service: ['', Validators.required],
+        voucher: ['', Validators.required],
+        concept: ['', Validators.required],
+        current_date: [formatDate(new Date(), 'MM/dd/yyyy', 'en'), Validators.required],
+        expiration_date: ['', Validators.required],
+        change: ['', Validators.nullValidator],
+        amount_dollar: ['', Validators.nullValidator],
+        amount_currency: ['', Validators.nullValidator],
+        settlement: ['', Validators.nullValidator],
+        state: [1, Validators.required]
       });
     }
   }

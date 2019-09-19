@@ -53,6 +53,37 @@ export class CountersService {
     return response;
   }
 
+  findAllByClient(client_uuid: string): Observable<any | ICounter[]> {
+    let values: ICounter[] = new Array();
+    let response = this.httpService
+      .get('/v1/counters/client/' + client_uuid, {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'x-access-token': this.credentialsService.credentials.token
+        }),
+        responseType: 'json'
+      })
+      .pipe(
+        map((value: any) => {
+          log.debug(value);
+          value.forEach((element: ICounter) => {
+            values.push({
+              uuid: element.uuid,
+              name: element.name,
+              email: element.email,
+              client_uuid: element.client_uuid,
+              clientName: ''
+            });
+          });
+
+          return values;
+        }),
+        catchError((error: any) => error)
+      );
+
+    return response;
+  }
+
   addCounter(counter: ICounter): Observable<any | IResponse> {
     let response = this.httpService
       .post('/v1/counters/', counter, {

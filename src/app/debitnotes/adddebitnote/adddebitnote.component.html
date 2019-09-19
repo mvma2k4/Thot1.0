@@ -11,17 +11,74 @@
         </div>
         <div fxLayout="row">
           <mat-form-field [hideRequiredMarker]="false">
-            <input matInput type="text" formControlName="name" placeholder="Nombre Completo" required />
+            <input matInput type="text" formControlName="current_date" placeholder="Fecha Actual" />
           </mat-form-field>
-
+          <mat-divider [inset]="true" [vertical]="true" style="height:1px"></mat-divider>
           <mat-form-field [hideRequiredMarker]="false">
-            <input matInput type="text" formControlName="address" placeholder="Dirección" required />
-          </mat-form-field>
-
-          <mat-form-field [hideRequiredMarker]="false">
-            <input matInput type="text" formControlName="phone" placeholder="Telefono" required />
+            <input
+              matInput
+              [matDatepicker]="picker"
+              formControlName="expiration_date"
+              placeholder="Fecha de Expiracion"
+              required
+            />
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
         </div>
+        <mat-divider></mat-divider>
+        <div fxLayout="row">
+          <mat-form-field [hideRequiredMarker]="false">
+            <mat-label>Cliente </mat-label>
+            <mat-select formControlName="client_uuid" (selectionChange)="getCounters($event.value)" required>
+              <mat-option>--</mat-option>
+              <mat-option *ngFor="let client of clients" [value]="client.uuid">
+                {{ client.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-divider [inset]="true" [vertical]="true" style="height:1px"></mat-divider>
+          <mat-form-field [hideRequiredMarker]="false">
+            <mat-label>Counter </mat-label>
+            <mat-select formControlName="counter_uuid" required>
+              <mat-option>--</mat-option>
+              <mat-option *ngFor="let counter of counters" [value]="counter.uuid">
+                {{ counter.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-divider [inset]="true" [vertical]="true" style="height:1px"></mat-divider>
+          <mat-form-field [hideRequiredMarker]="false">
+            <mat-label>Proveedor </mat-label>
+            <mat-select formControlName="provider_uuid" required>
+              <mat-option>--</mat-option>
+              <mat-option *ngFor="let provider of providers" [value]="provider.uuid">
+                {{ provider.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <mat-divider></mat-divider>
+        <div fxLayout="row">
+          <mat-form-field [hideRequiredMarker]="false">
+            <input matInput type="text" formControlName="passenger" placeholder="Pasajero" required />
+          </mat-form-field>
+          <mat-divider [inset]="true" [vertical]="true" style="height:1px"></mat-divider>
+
+          <mat-form-field [hideRequiredMarker]="false">
+            <textarea matInput formControlName="service" placeholder="Servicio" required> </textarea>
+          </mat-form-field>
+        </div>
+        <div fxLayout="row">
+          <mat-form-field [hideRequiredMarker]="false">
+            <textarea matInput formControlName="voucher" placeholder="Voucher" required> </textarea>
+          </mat-form-field>
+          <mat-divider [inset]="true" [vertical]="true" style="height:1px"></mat-divider>
+          <mat-form-field [hideRequiredMarker]="false">
+            <textarea matInput formControlName="concept" placeholder="Concepto" required> </textarea>
+          </mat-form-field>
+        </div>
+        <mat-divider></mat-divider>
         <div fxLayout="row">
           <button mat-raised-button color="primary" type="submit" [disabled]="nuevoNotaDebito.invalid || isLoading">
             <app-loader class="inline-loader" [isLoading]="isLoading"></app-loader>

@@ -60,7 +60,22 @@ export class DebitNotesService {
               uuid: element.uuid,
               code: element.code,
               clientName: element.clientName,
-              provider_uuid: element.uuid
+              client_uuid: element.client_uuid,
+              providerName: element.providerName,
+              provider_uuid: element.provider_uuid,
+              counterName: element.counterName,
+              counter_uuid: element.counter_uuid,
+              passenger: element.passenger,
+              service: element.service,
+              voucher: element.voucher,
+              concept: element.concept,
+              current_date: element.current_date,
+              expiration_date: element.expiration_date,
+              change: element.change,
+              amount_dollar: element.amount_dollar,
+              amount_currency: element.amount_currency,
+              settlement: element.settlement,
+              state: element.state
             });
           });
 
