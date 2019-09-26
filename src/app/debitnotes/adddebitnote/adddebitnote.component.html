@@ -38,7 +38,7 @@
           <mat-divider [inset]="true" [vertical]="true" style="height:1px"></mat-divider>
           <mat-form-field [hideRequiredMarker]="false">
             <mat-label>Counter </mat-label>
-            <mat-select formControlName="counter_uuid" required>
+            <mat-select formControlName="counter_uuid" (selectionChange)="setCounteName($event.value)" required>
               <mat-option>--</mat-option>
               <mat-option *ngFor="let counter of counters" [value]="counter.uuid">
                 {{ counter.name }}
@@ -48,7 +48,7 @@
           <mat-divider [inset]="true" [vertical]="true" style="height:1px"></mat-divider>
           <mat-form-field [hideRequiredMarker]="false">
             <mat-label>Proveedor </mat-label>
-            <mat-select formControlName="provider_uuid" required>
+            <mat-select formControlName="provider_uuid" (selectionChange)="setProviderName($event.value)" required>
               <mat-option>--</mat-option>
               <mat-option *ngFor="let provider of providers" [value]="provider.uuid">
                 {{ provider.name }}

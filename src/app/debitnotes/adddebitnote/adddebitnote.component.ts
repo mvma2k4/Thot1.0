@@ -11,6 +11,7 @@ import { IClientModel, ClientsService } from '@app/clients/clients-service';
 import { ICounter, CountersService } from '@app/counters/counters-service';
 import { IProviderModel, ProvidersService } from '@app/providers/providers-service';
 import { from } from 'rxjs';
+import { element } from '@angular/core/src/render3';
 
 const log = new Logger('AddDebitNote');
 @Component({
@@ -99,11 +100,26 @@ export class AdddebitnoteComponent implements OnInit, OnDestroy {
         values => {
           log.debug(values);
           this.counters = values;
+          this.nuevoNotaDebito.controls['clientName'].setValue(
+            this.clients.find(element => element.uuid === client_uuid).name
+          );
         },
         error => {
           log.debug(`Get Clients error: ${error}`);
         }
       );
+  }
+
+  setProviderName(provider_uuid: string) {
+    this.nuevoNotaDebito.controls['providerName'].setValue(
+      this.providers.find(element => element.uuid === provider_uuid).name
+    );
+  }
+
+  setCounteName(counter_uuid: string) {
+    this.nuevoNotaDebito.controls['counterName'].setValue(
+      this.counters.find(element => element.uuid === counter_uuid).name
+    );
   }
 
   ngOnDestroy() {}
