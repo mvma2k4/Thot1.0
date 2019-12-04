@@ -18,10 +18,8 @@ import { UsersModule } from './users/users.module';
 import { AdduserComponent } from './users/adduser/adduser.component';
 import { CountersModule } from './counters/counters.module';
 import { ProvidersModule } from './providers/providers.module';
-import { DebitNotesModule } from './debitnotes/debitnotes.module';
 import { AddcounterComponent } from './counters/addcounter/addcounter.component';
 import { AddproviderComponent } from './providers/addproviders/addprovider.component';
-import { AdddebitnoteComponent } from './debitnotes/adddebitnote/adddebitnote.component';
 import { ClientsModule } from './clients/clients.module';
 import { AddclientComponent } from './clients/addclients/addclient.component';
 
@@ -42,17 +40,10 @@ import { AddclientComponent } from './clients/addclients/addclient.component';
     CountersModule,
     ClientsModule,
     ProvidersModule,
-    DebitNotesModule,
     LoginModule,
     AppRoutingModule // must be imported as the last module as it contains the fallback route
   ],
-  entryComponents: [
-    AdduserComponent,
-    AddcounterComponent,
-    AddproviderComponent,
-    AddclientComponent,
-    AdddebitnoteComponent
-  ],
+  entryComponents: [AdduserComponent, AddcounterComponent, AddproviderComponent, AddclientComponent],
   declarations: [AppComponent],
   providers: [],
   bootstrap: [AppComponent]
