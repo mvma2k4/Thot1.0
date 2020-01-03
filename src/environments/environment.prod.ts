@@ -9,7 +9,7 @@ import env from './.env';
 export const environment = {
   production: true,
   version: env.npm_package_version,
-  serverUrl: 'https://metropolitana-thot-api.herokuapp.com',
+  serverUrl: 'https://metropolitana-api.herokuapp.com/',
   defaultLanguage: 'en-US',
   supportedLanguages: ['en-US', 'fr-FR']
 };

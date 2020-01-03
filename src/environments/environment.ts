@@ -13,7 +13,7 @@ import env from './.env';
 export const environment = {
   production: false,
   version: env.npm_package_version + '-dev',
-  // serverUrl: 'https://metropolitana-thot-api.herokuapp.com',
+  // serverUrl: 'https://metropolitana-api.herokuapp.com/',
   serverUrl: 'http://localhost:3000',
   defaultLanguage: 'en-US',
   supportedLanguages: ['en-US', 'fr-FR']
