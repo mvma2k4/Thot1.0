@@ -8,23 +8,24 @@ import { Logger } from '../core/logger.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IResponse } from '@app/core';
 
-const log = new Logger('providerService');
+const log = new Logger('service-infoService');
 
-export interface IProviderModel {
+export interface IService_info {
   uuid: string;
-  name: string;
-  address: string;
-  phone: string;
+  description: string;
+  base_price: string;
+  provider_uuid: string;
+  providerName: string;
 }
 
 @Injectable()
-export class ProvidersService {
+export class ServiceInfoService {
   constructor(private credentialsService: CredentialsService, private httpService: HttpClient) {}
 
-  findAll(): Observable<any | IProviderModel[]> {
-    let values: IProviderModel[] = new Array();
+  findAll(): Observable<any | IService_info[]> {
+    let values: IService_info[] = new Array();
     let response = this.httpService
-      .get('/v1/providers/', {
+      .get('/v1/service/', {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
           'x-access-token': this.credentialsService.credentials.token
@@ -34,12 +35,13 @@ export class ProvidersService {
       .pipe(
         map((value: any) => {
           log.debug(value);
-          value.forEach((element: IProviderModel) => {
+          value.forEach((element: IService_info) => {
             values.push({
               uuid: element.uuid,
-              name: element.name,
-              address: element.address,
-              phone: element.phone
+              description: element.description,
+              base_price: element.base_price,
+              provider_uuid: element.provider_uuid,
+              providerName: ''
             });
           });
 
@@ -51,10 +53,10 @@ export class ProvidersService {
     return response;
   }
 
-  findOne(id: string): Observable<any | IProviderModel> {
-    let result: IProviderModel;
+  findAllByProvider(provider_uuid: string): Observable<any | IService_info[]> {
+    let values: IService_info[] = new Array();
     let response = this.httpService
-      .get('/v1/providers/' + id, {
+      .get('/v1/service/provider/' + provider_uuid, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
           'x-access-token': this.credentialsService.credentials.token
@@ -64,8 +66,17 @@ export class ProvidersService {
       .pipe(
         map((value: any) => {
           log.debug(value);
-          result = value;
-          return result;
+          value.forEach((element: IService_info) => {
+            values.push({
+              uuid: element.uuid,
+              description: element.description,
+              base_price: element.base_price,
+              provider_uuid: element.provider_uuid,
+              providerName: ''
+            });
+          });
+
+          return values;
         }),
         catchError((error: any) => error)
       );
@@ -73,9 +84,9 @@ export class ProvidersService {
     return response;
   }
 
-  addProvider(counter: IProviderModel): Observable<any | IResponse> {
+  addService(service: IService_info): Observable<any | IResponse> {
     let response = this.httpService
-      .post('/v1/providers/', counter, {
+      .post('/v1/service/', service, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
           'x-access-token': this.credentialsService.credentials.token
@@ -92,9 +103,9 @@ export class ProvidersService {
     return response;
   }
 
-  updateProvider(counter: IProviderModel): Observable<any | IResponse> {
+  updateService(service: IService_info): Observable<any | IResponse> {
     let response = this.httpService
-      .put('/v1/providers', counter, {
+      .put('/v1/service', service, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
           'x-access-token': this.credentialsService.credentials.token
@@ -111,9 +122,9 @@ export class ProvidersService {
     return response;
   }
 
-  removeProvider(counter: IProviderModel): Observable<any | IResponse> {
+  removeService(service: IService_info): Observable<any | IResponse> {
     let response = this.httpService
-      .delete('/v1/providers/' + counter.uuid, {
+      .delete('/v1/service/' + service.uuid, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
           'x-access-token': this.credentialsService.credentials.token
