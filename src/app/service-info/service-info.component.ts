@@ -9,6 +9,7 @@ import { finalize } from 'rxjs/operators';
 
 import { Logger } from '@app/core/logger.service';
 import { untilDestroyed } from '@app/core';
+import { AddserviceinfoComponent } from './addserviceinfo/addserviceinfo.component';
 
 const log = new Logger('service-infoComponent');
 
@@ -68,7 +69,7 @@ export class ServiceInfoComponent implements OnInit {
   }
 
   add_service_info():void {
-    this._matbottomSheetRef = this._addserviceSheet.open(AddServiceInfoComponent);
+    this._matbottomSheetRef = this._addserviceSheet.open(AddserviceinfoComponent);
     this._matbottomSheetRef
       .afterDismissed()
       .pipe(
@@ -89,7 +90,7 @@ export class ServiceInfoComponent implements OnInit {
 
   edit_service_info(service: IService_info): void {
     log.debug(`edit service ${service}`);
-    this._matbottomSheetRef = this._addserviceSheet.open(AddServiceInfoComponent,{
+    this._matbottomSheetRef = this._addserviceSheet.open(AddserviceinfoComponent,{
       data: service
     });
     this._matbottomSheetRef
