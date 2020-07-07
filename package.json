@@ -62,7 +62,7 @@
     "@types/lodash": "^4.14.112",
     "@types/node": "^8.10.13",
     "codelyzer": "^5.0.0",
-    "electron": "^4.0.3",
+    "electron": "^7.2.4",
     "electron-packager": "^13.0.1",
     "electron-rebuild": "^1.8.5",
     "electron-reload": "^1.4.0",
